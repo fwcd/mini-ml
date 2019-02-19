@@ -8,7 +8,19 @@ fun ones(vararg shape: Int) = fill(1.0, *shape)
 fun fill(value: Double, vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)) { value }, shape)
 
 /** Syntactic sugar for doubleArrayOf. */
-fun rowOf(vararg values: Double) = doubleArrayOf(*values)
+fun rowOf(vararg values: Double): DoubleArray = values
+
+/** Syntactic sugar for creating a double array using ints. */
+fun rowOfInts(vararg values: Int): DoubleArray {
+	val result = DoubleArray(values.size)
+	for (i in 0 until values.size) {
+		result[i] = values[i].toDouble()
+	}
+	return result
+}
+
+/** Creates a 1-dimensional array of the given ints. */
+fun vectorOfInts(vararg values: Int) = NDArray(rowOfInts(*values), intArrayOf(values.size))
 
 /** Creates a 1-dimensional array of the given values. */
 fun vectorOf(vararg values: Double) = NDArray(values, intArrayOf(values.size))

@@ -68,6 +68,20 @@ class NDArrayTest {
 		assertThat(a + b, approxEquals(vectorOf(-1.0, 6.3, 2.1)))
 		assertThat(a - b, approxEquals(vectorOf(5.0, 1.7, -0.1)))
 		assertThat(a * -1.0, approxEquals(vectorOf(-2.0, -4.0, -1.0)))
+		
+		val matA = matrixOf(
+			rowOfInts(3, 2, 1),
+			rowOfInts(1, 0, 2)
+		)
+		val matB = matrixOf(
+			rowOfInts(1, 2),
+			rowOfInts(0, 1),
+			rowOfInts(4, 0)
+		)
+		assertThat(matA.matmul(matB), approxEquals(matrixOf(
+			rowOfInts(7, 8),
+			rowOfInts(9, 2)
+		)))
 	}
 	
 	private fun approxEquals(rhs: NDArray): Matcher<NDArray> {
