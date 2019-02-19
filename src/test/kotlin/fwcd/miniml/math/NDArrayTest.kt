@@ -36,5 +36,27 @@ class NDArrayTest {
 		assertThat(mat[1, 1], closeTo(4.0, EPS))
 		assertThat(mat[2, 0], closeTo(0.0, EPS))
 		assertThat(mat[2, 1], closeTo(-10.2, EPS))
+		
+		val mat3D = matrix3DOf(
+			arrayOf(
+				rowOf(2.0, -2.0),
+				rowOf(1.0, -1.0)
+			),
+			arrayOf(
+				rowOf(-32.4, 232.1),
+				rowOf(-0.2, 1.1)
+			)
+		)
+		assertThat(mat3D.flatSize, equalTo(8))
+		assertArrayEquals(doubleArrayOf(2.0, -2.0, 1.0, -1.0, -32.4, 232.1, -0.2, 1.1), mat3D.values, EPS)
+		assertArrayEquals(intArrayOf(2, 2, 2), mat3D.shape)
+		assertThat(mat3D[0, 0, 0], closeTo(2.0, EPS))
+		assertThat(mat3D[0, 0, 1], closeTo(-2.0, EPS))
+		assertThat(mat3D[0, 1, 0], closeTo(1.0, EPS))
+		assertThat(mat3D[0, 1, 1], closeTo(-1.0, EPS))
+		assertThat(mat3D[1, 0, 0], closeTo(-32.4, EPS))
+		assertThat(mat3D[1, 0, 1], closeTo(232.1, EPS))
+		assertThat(mat3D[1, 1, 0], closeTo(-0.2, EPS))
+		assertThat(mat3D[1, 1, 1], closeTo(1.1, EPS))
 	}
 }
