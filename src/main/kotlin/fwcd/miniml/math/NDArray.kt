@@ -106,6 +106,12 @@ class NDArray(
 		}
 	}
 	
+	/** Reduces this nd-array elementwise. */
+	inline fun reduce(operation: (Double, Double) -> Double): Double = values.reduce(operation)
+	
+	/** Computes the elementwise sum. */
+	fun reduceSum(): Double = reduce { a, b -> a + b }
+	
 	/** Computes the vector dot product of this nd-another and another, assuming both nd-arrays have rank 1. */
 	fun dot(rhs: NDArray): Double {
 		if (rank != 1 || rhs.rank != 1) {

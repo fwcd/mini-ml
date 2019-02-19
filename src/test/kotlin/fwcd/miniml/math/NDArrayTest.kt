@@ -75,6 +75,7 @@ class NDArrayTest {
 		assertThat(a % b, approxEquals(vectorOf(2.0, 1.7, 1.0)))
 		assertThat(a.reciprocal(), approxEquals(vectorOfInts(1, 1, 1) / a))
 		assertThat(a * -1.0, approxEquals(vectorOf(-2.0, -4.0, -1.0)))
+		assertThat(a.reduceSum(), closeTo(7.0, EPS))
 	}
 	
 	@Test
