@@ -23,7 +23,11 @@ class NDArray(
 		values[toOffset(indices, shape)] = value
 	}
 	
-	operator fun plus(rhs: NDArray): NDArray = rhs.copy().also { it += this }
+	operator fun plus(rhs: NDArray): NDArray = copy().also { it += rhs }
+	
+	operator fun minus(rhs: NDArray): NDArray = copy().also { it -= rhs }
+	
+	operator fun times(scalar: Double): NDArray = copy().also { it *= scalar }
 	
 	operator fun plusAssign(rhs: NDArray) {
 		if (flatSize != rhs.flatSize) {
@@ -32,6 +36,22 @@ class NDArray(
 		
 		for (i in 0 until flatSize) {
 			values[i] += rhs.values[i]
+		}
+	}
+	
+	operator fun minusAssign(rhs: NDArray) {
+		if (flatSize != rhs.flatSize) {
+			throw IllegalArgumentException("Can not perform subtraction on NDArrays with different flat sizes: $flatSize and ${rhs.flatSize}")
+		}
+		
+		for (i in 0 until flatSize) {
+			values[i] -= rhs.values[i]
+		}
+	}
+	
+	operator fun timesAssign(scalar: Double) {
+		for (i in 0 until flatSize) {
+			values[i] *= scalar
 		}
 	}
 	
