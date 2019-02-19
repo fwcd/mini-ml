@@ -70,6 +70,9 @@ class NDArrayTest {
 		val b = vectorOf(-3.0, 2.3, 1.1)
 		assertThat(a + b, approxEquals(vectorOf(-1.0, 6.3, 2.1)))
 		assertThat(a - b, approxEquals(vectorOf(5.0, 1.7, -0.1)))
+		assertThat(a * b, approxEquals(vectorOf(-6.0, 9.2, 1.1)))
+		assertThat(a / b, approxEquals(vectorOf(-0.6666666, 1.73913043478, 0.90909090909)))
+		assertThat(a % b, approxEquals(vectorOf(2.0, 1.7, 1.0)))
 		assertThat(a * -1.0, approxEquals(vectorOf(-2.0, -4.0, -1.0)))
 	}
 	

@@ -35,27 +35,26 @@ class NDArray(
 	/** Scales this nd-array. */
 	operator fun times(scalar: Double): NDArray = copy().also { it *= scalar }
 	
+	/** Performs elementwise multiplication. */
+	operator fun times(rhs: NDArray): NDArray = copy().also { it *= rhs }
+	
+	/** Divides this nd-array (assuming both nd-arrays are of rank zero). */
+	operator fun div(scalar: NDArray): NDArray = copy().also { it /= scalar }
+	
+	/** Scales this nd-array (assuming both nd-arrays are of rank zero). */
+	operator fun rem(scalar: NDArray): NDArray = copy().also { it %= scalar }
+	
+	/** Computes the additive inverse of this nd-array. */
+	operator fun unaryMinus() = map { -it }
+	
+	/** Returns itself. */
+	operator fun unaryPlus() = this
+	
 	/** Adds an nd-array to this one in-place. */
-	operator fun plusAssign(rhs: NDArray) {
-		if (flatSize != rhs.flatSize) {
-			throw IllegalArgumentException("Can not perform addition on NDArrays with different flat sizes: $flatSize and ${rhs.flatSize}")
-		}
-		
-		for (i in 0 until flatSize) {
-			values[i] += rhs.values[i]
-		}
-	}
+	operator fun plusAssign(rhs: NDArray) = zipAssign(rhs) { a, b -> a + b }
 	
 	/** Subtracts an nd-array from this one in-place. */
-	operator fun minusAssign(rhs: NDArray) {
-		if (flatSize != rhs.flatSize) {
-			throw IllegalArgumentException("Can not perform subtraction on NDArrays with different flat sizes: $flatSize and ${rhs.flatSize}")
-		}
-		
-		for (i in 0 until flatSize) {
-			values[i] -= rhs.values[i]
-		}
-	}
+	operator fun minusAssign(rhs: NDArray) = zipAssign(rhs) { a, b -> a - b }
 	
 	/** Scales this nd-array in-place. */
 	operator fun timesAssign(scalar: Double) {
@@ -64,10 +63,43 @@ class NDArray(
 		}
 	}
 	
+	/** Multiplies this nd-array with another elementwise in-place. */
+	operator fun timesAssign(rhs: NDArray) = zipAssign(rhs) { a, b -> a * b }
+	
+	/** Divides this nd-array by another elementwise in-place. */
+	operator fun divAssign(rhs: NDArray) = zipAssign(rhs) { a, b -> a / b }
+	
+	/** Computes the remainder of nd-array with another elementwise in-place. */
+	operator fun remAssign(rhs: NDArray) = zipAssign(rhs) { a, b -> a % b }
+	
+	/** Combines this nd-array elementwise with another using an operation function. */
+	inline fun zip(rhs: NDArray, operation: (Double, Double) -> Double): NDArray = copy().also { it.zipAssign(rhs, operation) }
+	
+	/** Maps this nd-array elementwise using given mapper function. */
+	inline fun map(mapper: (Double) -> Double): NDArray = copy().also { it.mapAssign(mapper) }
+	
+	/** Maps this nd-array elementwise in-place using given mapper function. */
+	inline fun mapAssign(mapper: (Double) -> Double) {
+		for (i in 0 until flatSize) {
+			values[i] = mapper(values[i])
+		}
+	}
+	
+	/** Combines this nd-array elementwise in-place with another using an operation function. */
+	inline fun zipAssign(rhs: NDArray, operation: (Double, Double) -> Double) {
+		if (flatSize != rhs.flatSize) {
+			throw IllegalArgumentException("Can not perform elementwise operation on NDArrays with different flat sizes: $flatSize and ${rhs.flatSize}")
+		}
+		
+		for (i in 0 until flatSize) {
+			values[i] = operation(values[i], rhs.values[i])
+		}
+	}
+	
 	/** Computes the vector dot product of this nd-another and another, assuming both nd-arrays have rank 1. */
 	fun dot(rhs: NDArray): Double {
 		if (rank != 1 || rhs.rank != 1) {
-			throw IllegalArgumentException("The dot product is only defined for vectors, not $rank/${rhs.rank} dimensions")
+			throw IllegalArgumentException("The dot product is only defined for vectors, not arrays of ranks $rank/${rhs.rank}")
 		} else if (shape[0] != rhs.shape[0]) {
 			throw IllegalArgumentException("The dot product requires two vectors of equal size, not ${shape[0]} and ${rhs.shape[0]}")
 		}
@@ -84,7 +116,7 @@ class NDArray(
 	/** Matrix-multiplies this nd-array with another, assuming both nd-arrays have rank 2. */
 	fun matmul(rhs: NDArray): NDArray {
 		if (rank != 2 || rhs.rank != 2) {
-			throw IllegalArgumentException("Matrix multiplication is only defined for two-dimensional matrices, not $rank/${rhs.rank} dimensions")
+			throw IllegalArgumentException("Matrix multiplication is only defined for two-dimensional matrices, not arrays of ranks $rank/${rhs.rank}")
 		} else if (shape[1] != rhs.shape[0]) {
 			throw IllegalArgumentException("The width of the left matrix (${shape[0]}) has to match the height of the right matrix (${shape[1]})")
 		}
