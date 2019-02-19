@@ -1,3 +1,7 @@
+package fwcd.miniml.graph
+
+import fwcd.miniml.math.NDArray
+
 /**
  * The result of a matrix multiplication.
  */

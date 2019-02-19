@@ -1,3 +1,5 @@
+package fwcd.miniml.math
+
 /** Creates an n-dimensional array filled with zeros. */
 fun zeros(vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)), shape)
 

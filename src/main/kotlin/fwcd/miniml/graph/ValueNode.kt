@@ -1,3 +1,7 @@
+package fwcd.miniml.graph
+
+import fwcd.miniml.math.NDArray
+
 /**
  * An operation that outputs an n-dimensional array.
  */

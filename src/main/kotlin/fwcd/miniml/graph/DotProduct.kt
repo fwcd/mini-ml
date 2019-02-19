@@ -1,3 +1,8 @@
+package fwcd.miniml.graph
+
+import fwcd.miniml.math.NDArray
+import fwcd.miniml.math.scalarOf
+
 /**
  * The result of a dot product.
  */

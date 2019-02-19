@@ -1,3 +1,5 @@
+package fwcd.miniml.math
+
 /**
  * A mutable n-dimensional array. However, all non-assign
  * operations will not mutate this array.

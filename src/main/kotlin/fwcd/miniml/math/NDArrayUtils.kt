@@ -1,3 +1,5 @@
+package fwcd.miniml.math
+
 fun toOffset(indices: IntArray, shape: IntArray): Int {
 	if (indices.size != shape.size) {
 		throw IllegalArgumentException("Index count of $indices does not match shape $shape")

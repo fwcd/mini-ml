@@ -1,3 +1,5 @@
+package fwcd.miniml.math
+
 import org.junit.Test
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
