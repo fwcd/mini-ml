@@ -1,9 +1,9 @@
 import org.junit.Test
 import org.junit.Assert.assertTrue
 
-class AppTest {
+class NDArrayTest {
 	@Test
-	fun yourTest() {
+	fun testNDArray() {
 		assertTrue(true)
 	}
 }
