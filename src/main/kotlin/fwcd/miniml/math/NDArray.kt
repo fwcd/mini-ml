@@ -64,7 +64,24 @@ class NDArray(
 		}
 	}
 	
-	/** Matrix-multiplies this nd-array with another, assuming both matrices have rank 2. */
+	/** Computes the vector dot product of this nd-another and another, assuming both nd-arrays have rank 1. */
+	fun dot(rhs: NDArray): Double {
+		if (rank != 1 || rhs.rank != 1) {
+			throw IllegalArgumentException("The dot product is only defined for vectors, not $rank/${rhs.rank} dimensions")
+		} else if (shape[0] != rhs.shape[0]) {
+			throw IllegalArgumentException("The dot product requires two vectors of equal size, not ${shape[0]} and ${rhs.shape[0]}")
+		}
+		
+		var result: Double = 0.0
+		
+		for (i in 0 until shape[0]) {
+			result += values[i] * rhs.values[i]
+		}
+		
+		return result
+	}
+	
+	/** Matrix-multiplies this nd-array with another, assuming both nd-arrays have rank 2. */
 	fun matmul(rhs: NDArray): NDArray {
 		if (rank != 2 || rhs.rank != 2) {
 			throw IllegalArgumentException("Matrix multiplication is only defined for two-dimensional matrices, not $rank/${rhs.rank} dimensions")

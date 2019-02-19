@@ -62,13 +62,19 @@ class NDArrayTest {
 		assertThat(mat3D[1, 0, 1], closeTo(232.1, EPS))
 		assertThat(mat3D[1, 1, 0], closeTo(-0.2, EPS))
 		assertThat(mat3D[1, 1, 1], closeTo(1.1, EPS))
-		
+	}
+	
+	@Test
+	fun testArithmetic() {
 		val a = vectorOf(2.0, 4.0, 1.0)
 		val b = vectorOf(-3.0, 2.3, 1.1)
 		assertThat(a + b, approxEquals(vectorOf(-1.0, 6.3, 2.1)))
 		assertThat(a - b, approxEquals(vectorOf(5.0, 1.7, -0.1)))
 		assertThat(a * -1.0, approxEquals(vectorOf(-2.0, -4.0, -1.0)))
-		
+	}
+	
+	@Test
+	fun testMatrixMultiplication() {
 		val matA = matrixOf(
 			rowOfInts(3, 2, 1),
 			rowOfInts(1, 0, 2)
@@ -82,6 +88,13 @@ class NDArrayTest {
 			rowOfInts(7, 8),
 			rowOfInts(9, 2)
 		)))
+	}
+	
+	@Test
+	fun testDotProduct() {
+		val vecA = vectorOfInts(4, 3, 2)
+		val vecB = vectorOfInts(-1, 0, 1)
+		assertThat(scalarOf(vecA.dot(vecB)), approxEquals(scalarOfInt(-2)))
 	}
 	
 	private fun approxEquals(rhs: NDArray): Matcher<NDArray> {

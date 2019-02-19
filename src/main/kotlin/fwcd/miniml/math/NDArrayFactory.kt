@@ -22,6 +22,12 @@ fun rowOfInts(vararg values: Int): DoubleArray {
 /** Creates a 1-dimensional array of the given ints. */
 fun vectorOfInts(vararg values: Int) = NDArray(rowOfInts(*values), intArrayOf(values.size))
 
+/** Creates a 0-dimensional array of the given values. */
+fun scalarOf(value: Double) = NDArray(doubleArrayOf(value), intArrayOf())
+
+/** Creates a 0-dimensional array of an integer. */
+fun scalarOfInt(value: Int) = scalarOf(value.toDouble())
+
 /** Creates a 1-dimensional array of the given values. */
 fun vectorOf(vararg values: Double) = NDArray(values, intArrayOf(values.size))
 
