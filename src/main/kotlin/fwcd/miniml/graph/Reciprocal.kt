@@ -8,5 +8,5 @@ import fwcd.miniml.math.NDArray
 class Reciprocal(
 	private val value: ValueNode
 ) : ValueNode {
-	override fun forward(feedDict: Map<ValueNode, NDArray>) = value.forward(feedDict).reciprocal()
+	override fun forward() = value.forward().reciprocal()
 }

@@ -9,5 +9,5 @@ class MatrixProduct(
 	private val lhs: ValueNode,
 	private val rhs: ValueNode
 ) : ValueNode {
-	override fun forward(feedDict: Map<ValueNode, NDArray>) = lhs.forward(feedDict).matmul(rhs.forward(feedDict))
+	override fun forward() = lhs.forward().matmul(rhs.forward())
 }

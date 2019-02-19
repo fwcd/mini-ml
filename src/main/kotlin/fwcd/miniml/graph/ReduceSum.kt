@@ -9,5 +9,5 @@ import fwcd.miniml.math.scalarOf
 class ReduceSum(
 	private val value: ValueNode
 ) : ValueNode {
-	override fun forward(feedDict: Map<ValueNode, NDArray>) = scalarOf(value.forward(feedDict).reduceSum())
+	override fun forward() = scalarOf(value.forward().reduceSum())
 }
