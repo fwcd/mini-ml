@@ -1,2 +1,2 @@
 # MiniML
-A lightweight machine learning library written in pure Kotlin.
+A lightweight computation graph library, primarily intended for machine learning, written in pure Kotlin.
