@@ -1,5 +1,6 @@
 /**
- * A mutable n-dimensional array.
+ * A mutable n-dimensional array. However, all non-assign
+ * operations will not mutate this array.
  */
 class NDArray(
 	val values: DoubleArray,
@@ -44,11 +45,20 @@ class NDArray(
 	/** Scales this nd-array (assuming both nd-arrays are of rank zero). */
 	operator fun rem(scalar: NDArray): NDArray = copy().also { it %= scalar }
 	
+	/** Computes the multiplicative inverse of this nd-array. */
+	fun reciprocal() = map { 1.0 / it }
+	
 	/** Computes the additive inverse of this nd-array. */
 	operator fun unaryMinus() = map { -it }
 	
 	/** Returns itself. */
 	operator fun unaryPlus() = this
+	
+	/** Computes the multiplicative inverse of this nd-array in-place. */
+	fun reciprocalAssign() = mapAssign { 1.0 / it }
+	
+	/** Computes the additive inverse of this nd-array in-place. */
+	fun unaryMinusAssign() = mapAssign { -it }
 	
 	/** Adds an nd-array to this one in-place. */
 	operator fun plusAssign(rhs: NDArray) = zipAssign(rhs) { a, b -> a + b }
