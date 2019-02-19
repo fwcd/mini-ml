@@ -5,6 +5,9 @@ class NDArray(
 	val values: DoubleArray,
 	val shape: IntArray
 ) {
+	val flatSize
+		get() = values.size
+	
 	init {
 		if (values.size != toFlattenedSize(shape)) {
 			throw IllegalArgumentException("Value count of $values does not match shape $shape")

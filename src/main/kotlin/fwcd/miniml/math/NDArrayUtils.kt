@@ -4,7 +4,7 @@ fun toOffset(indices: IntArray, shape: IntArray): Int {
 	}
 	
 	var offset: Int = 0
-	var factor: Int = 0
+	var factor: Int = 1
 	
 	for (i in (indices.size - 1) downTo 0) {
 		offset += indices[i] * factor
