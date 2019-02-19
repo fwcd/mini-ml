@@ -7,6 +7,8 @@ class NDArray(
 ) {
 	val flatSize
 		get() = values.size
+	val rank
+		get() = shape.size
 	
 	init {
 		if (values.size != toFlattenedSize(shape)) {
@@ -21,5 +23,43 @@ class NDArray(
 		values[toOffset(indices, shape)] = value
 	}
 	
+	operator fun plus(rhs: NDArray): NDArray = copy().also { it += this }
+	
+	operator fun plusAssign(rhs: NDArray) {
+		if (flatSize != rhs.flatSize) {
+			throw IllegalArgumentException("Can not perform addition on NDArrays with different flat sizes: $flatSize and ${rhs.flatSize}")
+		}
+		
+		for (i in 0 until flatSize) {
+			values[i] += rhs.values[i]
+		}
+	}
+	
 	fun copy() = NDArray(values.copyOf(), shape.copyOf())
+	
+	private inner class Stringifier(private var offset: Int = 0, private val builder: StringBuilder = StringBuilder()) {
+		fun stringify(dimIndex: Int) {
+			if (dimIndex == (rank - 1)) {
+				builder.append(values[offset])
+				offset++
+			} else {
+				builder.append('[')
+				val last = shape[dimIndex + 1]
+				for (i in 0 until last) {
+					stringify(dimIndex + 1)
+					if ((i + 1) < last) {
+						builder.append(", ")
+					}
+				}
+				builder.append(']')
+			}
+		}
+		
+		override fun toString(): String {
+			stringify(-1)
+			return builder.toString()
+		}
+	}
+	
+	override fun toString(): String = Stringifier().toString()
 }
