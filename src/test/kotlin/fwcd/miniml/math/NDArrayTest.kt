@@ -21,5 +21,20 @@ class NDArrayTest {
 		assertThat(vec[0], closeTo(23.0, EPS))
 		assertThat(vec[1], closeTo(-1.3, EPS))
 		assertThat(vec[2], closeTo(921.4, EPS))
+		
+		val mat = matrixOf(
+			rowOf(2.0, 3.0),
+			rowOf(5.0, 4.0),
+			rowOf(0.0, -10.2)
+		)
+		assertThat(mat.flatSize, equalTo(6))
+		assertArrayEquals(doubleArrayOf(2.0, 3.0, 5.0, 4.0, 0.0, -10.2), mat.values, EPS)
+		assertArrayEquals(intArrayOf(3, 2), mat.shape)
+		assertThat(mat[0, 0], closeTo(2.0, EPS))
+		assertThat(mat[0, 1], closeTo(3.0, EPS))
+		assertThat(mat[1, 0], closeTo(5.0, EPS))
+		assertThat(mat[1, 1], closeTo(4.0, EPS))
+		assertThat(mat[2, 0], closeTo(0.0, EPS))
+		assertThat(mat[2, 1], closeTo(-10.2, EPS))
 	}
 }

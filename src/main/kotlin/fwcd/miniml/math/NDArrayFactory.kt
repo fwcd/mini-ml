@@ -1,11 +1,19 @@
+/** Creates an n-dimensional array filled with zeros. */
 fun zeros(vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)), shape)
 
+/** Creates an n-dimensional array filled with ones. */
 fun ones(vararg shape: Int) = fill(1.0, *shape)
 
+/** Creates an n-dimensional array filled with a scalar value. */
 fun fill(value: Double, vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)) { value }, shape)
 
+/** Syntactic sugar for doubleArrayOf. */
+fun rowOf(vararg values: Double) = doubleArrayOf(*values)
+
+/** Creates a 1-dimensional array of the given values. */
 fun vectorOf(vararg values: Double) = NDArray(values, intArrayOf(values.size))
 
+/** Creates a 2-dimensional array of the given rows. */
 fun matrixOf(vararg values: DoubleArray): NDArray {
 	val height = values.size
 	val width = if (values.isEmpty()) 0 else values[0].size
@@ -20,6 +28,7 @@ fun matrixOf(vararg values: DoubleArray): NDArray {
 	return nd
 }
 
+/** Creates a 3-dimensional value of the given slices. */
 fun matrix3DOf(vararg values: Array<DoubleArray>): NDArray {
 	val depth = values.size
 	val height = if (values.isEmpty()) 0 else values[0].size
