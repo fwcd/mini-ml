@@ -23,7 +23,7 @@ class NDArray(
 		values[toOffset(indices, shape)] = value
 	}
 	
-	operator fun plus(rhs: NDArray): NDArray = copy().also { it += this }
+	operator fun plus(rhs: NDArray): NDArray = rhs.copy().also { it += this }
 	
 	operator fun plusAssign(rhs: NDArray) {
 		if (flatSize != rhs.flatSize) {
@@ -36,6 +36,18 @@ class NDArray(
 	}
 	
 	fun copy() = NDArray(values.copyOf(), shape.copyOf())
+	
+	fun equals(rhs: NDArray, tolerance: Double): Boolean {
+		if (!rhs.shape.contentEquals(shape)) {
+			return false
+		}
+		for (i in 0 until flatSize) {
+			if (Math.abs(values[i] - rhs.values[i]) > tolerance) {
+				return false
+			}
+		}
+		return true
+	}
 	
 	private inner class Stringifier(private var offset: Int = 0, private val builder: StringBuilder = StringBuilder()) {
 		fun stringify(dimIndex: Int) {

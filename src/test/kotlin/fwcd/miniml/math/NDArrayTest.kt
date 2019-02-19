@@ -1,6 +1,10 @@
 import org.junit.Test
 import org.junit.Assert.assertThat
+import org.junit.Assert.assertTrue
 import org.junit.Assert.assertArrayEquals
+import org.hamcrest.Matcher
+import org.hamcrest.BaseMatcher
+import org.hamcrest.Description
 import org.hamcrest.Matchers.*
 
 private const val EPS: Double = 0.01
@@ -58,5 +62,21 @@ class NDArrayTest {
 		assertThat(mat3D[1, 0, 1], closeTo(232.1, EPS))
 		assertThat(mat3D[1, 1, 0], closeTo(-0.2, EPS))
 		assertThat(mat3D[1, 1, 1], closeTo(1.1, EPS))
+		
+		val a = vectorOf(2.0, 4.0, 1.0)
+		val b = vectorOf(-3.0, 2.3, 1.1)
+		assertThat(a + b, approxEquals(vectorOf(-1.0, 6.3, 2.1)))
+	}
+	
+	private fun approxEquals(rhs: NDArray): Matcher<NDArray> {
+		return object : BaseMatcher<NDArray>() {
+			override fun matches(lhs: Any): Boolean = (lhs as? NDArray)?.equals(rhs, EPS) ?: false
+			
+			override fun describeTo(description: Description) {
+				description
+					.appendText("should match ")
+					.appendValue(rhs)
+			}
+		}
 	}
 }
