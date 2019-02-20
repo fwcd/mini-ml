@@ -3,14 +3,11 @@ package fwcd.miniml.graph
 import fwcd.miniml.math.NDArray
 
 /**
- * A variable that is optimized through gradients.
+ * A variable that is not optimized through gradients.
+ * Usually, these are inputs to the computation graph.
  */
-class Variable(
+class Placeholder(
 	private val value: NDArray
 ) : ValueNode {
 	override fun forward() = value
-	
-	override fun apply(delta: NDArray) {
-		value += delta
-	}
 }
