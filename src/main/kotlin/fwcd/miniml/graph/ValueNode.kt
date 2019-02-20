@@ -17,4 +17,10 @@ interface ValueNode {
 	fun backward() {
 		backward(scalarOf(1.0))
 	}
+	
+	/**
+	 * Applies a delta to this node if possible.
+	 * Usually this is a processed gradient.
+	 */
+	fun apply(delta: NDArray) {}
 }
