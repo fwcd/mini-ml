@@ -15,6 +15,9 @@ interface ValueNode {
 	/** Backpropagates a gradient. */
 	fun backward(gradient: NDArray)
 	
+	/** Returns a cached input result from the last forward() invocation if this node supports caching. */
+	fun cachedForward(): NDArray? = null
+	
 	/** Backpropagates a scalar one as the gradient. */
 	fun backward() {
 		backward(scalarOf(1.0))

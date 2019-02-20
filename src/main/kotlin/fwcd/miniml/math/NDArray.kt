@@ -17,7 +17,7 @@ class NDArray(
 	
 	init {
 		if (values.size != toFlattenedSize(shape)) {
-			throw IllegalArgumentException("Value count of $values does not match shape $shape")
+			throw ShapeMismatchException("Value count of $values does not match shape $shape")
 		}
 	}
 	
@@ -100,7 +100,7 @@ class NDArray(
 	/** Combines this nd-array elementwise in-place with another using an operation function. */
 	inline fun zipAssign(rhs: NDArray, operation: (Double, Double) -> Double) {
 		if (flatSize != rhs.flatSize) {
-			throw IllegalArgumentException("Can not perform elementwise operation on NDArrays with different flat sizes: $flatSize and ${rhs.flatSize}")
+			throw ShapeMismatchException("Can not perform elementwise operation on NDArrays with different flat sizes: $flatSize and ${rhs.flatSize}")
 		}
 		
 		for (i in 0 until flatSize) {
@@ -117,9 +117,9 @@ class NDArray(
 	/** Computes the vector dot product of this nd-another and another, assuming both nd-arrays have rank 1. */
 	fun dot(rhs: NDArray): Double {
 		if (rank != 1 || rhs.rank != 1) {
-			throw IllegalArgumentException("The dot product is only defined for vectors, not arrays of ranks $rank/${rhs.rank}")
+			throw ShapeMismatchException("The dot product is only defined for vectors, not arrays of ranks $rank/${rhs.rank}")
 		} else if (shape[0] != rhs.shape[0]) {
-			throw IllegalArgumentException("The dot product requires two vectors of equal size, not ${shape[0]} and ${rhs.shape[0]}")
+			throw ShapeMismatchException("The dot product requires two vectors of equal size, not ${shape[0]} and ${rhs.shape[0]}")
 		}
 		
 		var result: Double = 0.0
@@ -134,9 +134,9 @@ class NDArray(
 	/** Matrix-multiplies this nd-array with another, assuming both nd-arrays have rank 2. */
 	fun matmul(rhs: NDArray): NDArray {
 		if (rank != 2 || rhs.rank != 2) {
-			throw IllegalArgumentException("Matrix multiplication is only defined for two-dimensional matrices, not arrays of ranks $rank/${rhs.rank}")
+			throw ShapeMismatchException("Matrix multiplication is only defined for two-dimensional matrices, not arrays of ranks $rank/${rhs.rank}")
 		} else if (shape[1] != rhs.shape[0]) {
-			throw IllegalArgumentException("The width of the left matrix (${shape[0]}) has to match the height of the right matrix (${shape[1]})")
+			throw ShapeMismatchException("The width of the left matrix (${shape[0]}) has to match the height of the right matrix (${shape[1]})")
 		}
 		
 		val dotCount = shape[1]

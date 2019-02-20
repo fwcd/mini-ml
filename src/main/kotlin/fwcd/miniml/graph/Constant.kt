@@ -12,7 +12,5 @@ class Constant(
 	
 	override fun forward() = value
 	
-	override fun backward(gradient: NDArray) {
-		
-	}
+	override fun backward(gradient: NDArray) {}
 }
