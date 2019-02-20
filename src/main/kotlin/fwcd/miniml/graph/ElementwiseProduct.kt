@@ -6,8 +6,10 @@ import fwcd.miniml.math.NDArray
  * The elementwise product of two values.
  */
 class ElementwiseProduct(
-	private val lhs: ValueNode,
-	private val rhs: ValueNode
+	lhs: ValueNode,
+	rhs: ValueNode
 ) : ValueNode {
-	override fun forward() = lhs.forward() * rhs.forward()
+	override val operands: List<ValueNode> = listOf(lhs, rhs)
+	
+	override fun forward() = operands[0].forward() * operands[1].forward()
 }

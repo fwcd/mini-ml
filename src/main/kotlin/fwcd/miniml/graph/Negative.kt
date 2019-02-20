@@ -6,7 +6,9 @@ import fwcd.miniml.math.NDArray
  * The elementwise additive inverse of a value.
  */
 class Negative(
-	private val value: ValueNode
+	value: ValueNode
 ) : ValueNode {
-	override fun forward() = -value.forward()
+	override val operands: List<ValueNode> = listOf(value)
+	
+	override fun forward() = -operands[0].forward()
 }

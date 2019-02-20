@@ -6,7 +6,9 @@ import fwcd.miniml.math.NDArray
  * The elementwise multiplicative inverse of a value.
  */
 class Reciprocal(
-	private val value: ValueNode
+	value: ValueNode
 ) : ValueNode {
-	override fun forward() = value.forward().reciprocal()
+	override val operands: List<ValueNode> = listOf(value)
+	
+	override fun forward() = operands[0].forward().reciprocal()
 }

@@ -7,6 +7,8 @@ import fwcd.miniml.math.scalarOf
  * An operation that outputs an n-dimensional array.
  */
 interface ValueNode {
+	val operands: List<ValueNode>
+	
 	/** Computes this node's output. */
 	fun forward(): NDArray
 	

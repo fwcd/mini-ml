@@ -10,11 +10,15 @@ import fwcd.miniml.math.NDArray
  */
 class GradientNode(private val delegate: ValueNode) : ValueNode {
 	var gradient: NDArray? = null
+	override val operands: List<ValueNode>
+		get() = delegate.operands
 	
 	override fun forward(): NDArray = delegate.forward()
 	
 	override fun backward(gradient: NDArray) {
-		this.gradient = gradient
+		this.gradient?.also { it += gradient } ?: run {
+			this.gradient = gradient
+		}
 		delegate.backward(gradient)
 	}
 	

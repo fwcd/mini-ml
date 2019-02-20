@@ -7,8 +7,10 @@ import fwcd.miniml.math.scalarOf
  * The result of a dot product.
  */
 class DotProduct(
-	private val lhs: ValueNode,
-	private val rhs: ValueNode
+	lhs: ValueNode,
+	rhs: ValueNode
 ) : ValueNode {
-	override fun forward() = scalarOf(lhs.forward().dot(rhs.forward()))
+	override val operands: List<ValueNode> = listOf(lhs, rhs)
+	
+	override fun forward() = scalarOf(operands[0].forward().dot(operands[1].forward()))
 }

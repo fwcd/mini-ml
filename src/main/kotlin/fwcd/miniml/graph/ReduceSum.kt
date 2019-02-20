@@ -7,7 +7,9 @@ import fwcd.miniml.math.scalarOf
  * The sum across all elements.
  */
 class ReduceSum(
-	private val value: ValueNode
+	value: ValueNode
 ) : ValueNode {
-	override fun forward() = scalarOf(value.forward().reduceSum())
+	override val operands: List<ValueNode> = listOf(value)
+	
+	override fun forward() = scalarOf(operands[0].forward().reduceSum())
 }

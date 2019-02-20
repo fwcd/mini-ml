@@ -6,8 +6,10 @@ import fwcd.miniml.math.NDArray
  * The result of a matrix multiplication.
  */
 class MatrixProduct(
-	private val lhs: ValueNode,
-	private val rhs: ValueNode
+	lhs: ValueNode,
+	rhs: ValueNode
 ) : ValueNode {
-	override fun forward() = lhs.forward().matmul(rhs.forward())
+	override val operands: List<ValueNode> = listOf(lhs, rhs)
+	
+	override fun forward() = operands[0].forward().matmul(operands[1].forward())
 }
