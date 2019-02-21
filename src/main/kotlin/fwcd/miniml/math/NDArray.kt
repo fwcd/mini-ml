@@ -152,7 +152,7 @@ class NDArray(
 		val transposed = NDArray(shape.rearranged(*permutation))
 		
 		traverse {
-			// TODO
+			
 		}
 		
 		return transposed
