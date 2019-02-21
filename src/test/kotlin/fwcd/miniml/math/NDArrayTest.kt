@@ -140,4 +140,33 @@ class NDArrayTest {
 			listOf(2, 1, 2)
 		))
 	}
+	
+	@Test
+	fun testDestructuring() {
+		val (a, b, c) = matrix3DOf(
+			arrayOf(
+				rowOfInts(2, 5, 3),
+				rowOfInts(0, 0, 1)
+			),
+			arrayOf(
+				rowOfInts(-1, -13, 79),
+				rowOfInts(1, 10, 43)
+			),
+			arrayOf(
+				rowOfInts(1, 1, 2),
+				rowOfInts(2, 9, 3)
+			)
+		)
+		val (rowA, rowB) = a
+		val (cellA, cellB, cellC) = rowA
+		
+		assertThat(a, approxEquals(matrixOf(rowOfInts(2, 5, 3), rowOfInts(0, 0, 1))))
+		assertThat(b, approxEquals(matrixOf(rowOfInts(-1, -13, 79), rowOfInts(1, 10, 43))))
+		assertThat(c, approxEquals(matrixOf(rowOfInts(1, 1, 2), rowOfInts(2, 9, 3))))
+		assertThat(rowA, approxEquals(vectorOfInts(2, 5, 3)))
+		assertThat(rowB, approxEquals(vectorOfInts(0, 0, 1)))
+		assertThat(cellA, approxEquals(scalarOfInt(2)))
+		assertThat(cellB, approxEquals(scalarOfInt(5)))
+		assertThat(cellC, approxEquals(scalarOfInt(3)))
+	}
 }

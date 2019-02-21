@@ -7,7 +7,8 @@ private val MATRIX_TRANSPOSE: IntArray = intArrayOf(1, 0)
 
 /**
  * A mutable n-dimensional array. However, all non-assign
- * operations will not mutate this array.
+ * operations will not mutate this array. For indexing
+ * the row-major order is used.
  *
  * <p>In machine learning, these arrays are often referred
  * to as "tensors", even though this definition of "tensor"
@@ -17,11 +18,11 @@ class NDArray(
 	val values: DoubleArray,
 	val shape: IntArray
 ) {
+	var mutable = true
 	val flatSize
 		get() = values.size
 	val rank
 		get() = shape.size
-	var mutable = true
 	
 	constructor(shape: IntArray) : this(DoubleArray(toFlattenedSize(shape)), shape) {}
 	
@@ -98,6 +99,39 @@ class NDArray(
 	
 	/** Computes the remainder of nd-array with another elementwise in-place. */
 	operator fun remAssign(rhs: NDArray) = zipAssign(rhs) { a, b -> a % b }
+	
+	/** Fetches the 1st inner array (to support destructurings) */
+	operator fun component1(): NDArray = innerNDArray(0)
+	
+	/** Fetches the 2nd inner array (to support destructurings) */
+	operator fun component2(): NDArray = innerNDArray(1)
+	
+	/** Fetches the 3rd inner array (to support destructurings) */
+	operator fun component3(): NDArray = innerNDArray(2)
+	
+	/** Fetches the 4th inner array (to support destructurings) */
+	operator fun component4(): NDArray = innerNDArray(3)
+	
+	/** Fetches the 5th inner array (to support destructurings) */
+	operator fun component5(): NDArray = innerNDArray(4)
+	
+	/**
+	 * Fetches the ..th inner nd-array. The resulting
+	 * nd-array will have a rank of this.rank - 1. In
+	 * case of a matrix, this function will return the
+	 * row at the specified index.
+	 */
+	fun innerNDArray(index: Int): NDArray {
+		if (rank == 0) {
+			throw IllegalStateException("Cannot access inner nd-array of a scalar (rank has to be >0)")
+		}
+		val outerStride = stride(shape, 0)
+		val start = outerStride * index
+		val end = start + outerStride
+		val innerShape = shape.copyOfRange(1, shape.size)
+		val innerValues = values.copyOfRange(start, end)
+		return NDArray(innerValues, innerShape)
+	}
 	
 	/** Combines this nd-array elementwise with another using an operation function. */
 	inline fun zip(rhs: NDArray, operation: (Double, Double) -> Double): NDArray = copy().also { it.zipAssign(rhs, operation) }
