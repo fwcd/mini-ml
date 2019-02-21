@@ -9,8 +9,8 @@ import fwcd.miniml.math.NDArray
  * to simplify construction of computation graphs.
  */
 class GradientNode(private val delegate: ValueNode) : ValueNode {
+	private var cached: NDArray? = null
 	var gradient: NDArray? = null
-	var cached: NDArray? = null
 	override val operands: List<ValueNode>
 		get() = delegate.operands
 	
@@ -44,4 +44,6 @@ class GradientNode(private val delegate: ValueNode) : ValueNode {
 	fun dot(rhs: ValueNode): GradientNode = GradientNode(DotProduct(this, rhs))
 	
 	fun matmul(rhs: ValueNode): GradientNode = GradientNode(MatrixProduct(this, rhs))
+	
+	fun square(): GradientNode = GradientNode(ElementwiseSquare(this))
 }

@@ -4,12 +4,7 @@ import org.junit.Test
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertArrayEquals
-import org.hamcrest.Matcher
-import org.hamcrest.BaseMatcher
-import org.hamcrest.Description
 import org.hamcrest.Matchers.*
-
-private const val EPS: Double = 0.01
 
 class NDArrayTest {
 	@Test
@@ -144,17 +139,5 @@ class NDArrayTest {
 			listOf(2, 1, 1),
 			listOf(2, 1, 2)
 		))
-	}
-	
-	private fun approxEquals(rhs: NDArray): Matcher<NDArray> {
-		return object : BaseMatcher<NDArray>() {
-			override fun matches(lhs: Any): Boolean = (lhs as? NDArray)?.equals(rhs, EPS) ?: false
-			
-			override fun describeTo(description: Description) {
-				description
-					.appendText("should match ")
-					.appendValue(rhs)
-			}
-		}
 	}
 }
