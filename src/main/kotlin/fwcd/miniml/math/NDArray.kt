@@ -175,6 +175,7 @@ class NDArray(
 			while (j >= 0 && coords[j] >= shape[j - 1]) {
 				coords[j] = 0
 				coords[j - 1]++
+				j--
 			}
 		}
 	}
