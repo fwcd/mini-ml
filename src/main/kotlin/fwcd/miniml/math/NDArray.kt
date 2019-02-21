@@ -158,11 +158,24 @@ class NDArray(
 		return transposed
 	}
 	
-	private inline fun traverse(action: (IntArray) -> Unit) {
+	/**
+	 * Traverses all possible coordinates in this array.
+	 * NOTE that the array passed to the consumer will
+	 * be mutated, thus if the caller needs to store it,
+	 * a copy should be created.
+	 */
+	internal inline fun traverse(consumer: (IntArray) -> Unit) {
+		val lastIndex = rank
 		val coords = IntArray(rank + 1)
 		
 		while (coords[0] == 0) {
-			// TODO
+			consumer(coords)
+			coords[lastIndex]++
+			var j = lastIndex
+			while (j >= 0 && coords[j] >= shape[j - 1]) {
+				coords[j] = 0
+				coords[j - 1]++
+			}
 		}
 	}
 	

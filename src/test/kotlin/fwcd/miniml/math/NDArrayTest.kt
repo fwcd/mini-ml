@@ -104,6 +104,48 @@ class NDArrayTest {
 		assertThat(scalarOf(vecA.dot(vecB)), approxEquals(scalarOfInt(-2)))
 	}
 	
+	@Test
+	fun testTraverse() {
+		val arr = matrix3DOf(
+			arrayOf(
+				rowOfInts(2, 5, 3),
+				rowOfInts(0, 0, 1)
+			),
+			arrayOf(
+				rowOfInts(-1, -13, 79),
+				rowOfInts(1, 10, 43)
+			),
+			arrayOf(
+				rowOfInts(1, 1, 2),
+				rowOfInts(2, 9, 3)
+			)
+		)
+		val traversed = mutableListOf<IntArray>()
+		arr.traverse {
+			traversed.add(it.copyOf())
+		}
+		assertThat(traversed, contains(
+			intArrayOf(0, 0, 0),
+			intArrayOf(0, 0, 1),
+			intArrayOf(0, 0, 2),
+			intArrayOf(0, 1, 0),
+			intArrayOf(0, 1, 1),
+			intArrayOf(0, 1, 2),
+			intArrayOf(1, 0, 0),
+			intArrayOf(1, 0, 1),
+			intArrayOf(1, 0, 2),
+			intArrayOf(1, 1, 0),
+			intArrayOf(1, 1, 1),
+			intArrayOf(1, 1, 2)
+			intArrayOf(2, 0, 0),
+			intArrayOf(2, 0, 1),
+			intArrayOf(2, 0, 2),
+			intArrayOf(2, 1, 0),
+			intArrayOf(2, 1, 1),
+			intArrayOf(2, 1, 2)
+		))
+	}
+	
 	private fun approxEquals(rhs: NDArray): Matcher<NDArray> {
 		return object : BaseMatcher<NDArray>() {
 			override fun matches(lhs: Any): Boolean = (lhs as? NDArray)?.equals(rhs, EPS) ?: false

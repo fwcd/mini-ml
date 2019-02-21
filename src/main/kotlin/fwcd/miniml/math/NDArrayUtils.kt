@@ -24,6 +24,7 @@ fun toFlattenedSize(shape: IntArray): Int {
 	return size
 }
 
+/** Rearranges the array in-place. */
 fun IntArray.rearrange(vararg permutedIndices: Int) {
 	if (permutedIndices.size != size) {
 		throw IllegalArgumentException("Number of permutation indices ($permutedIndices) does not match array length ($size)")
@@ -49,6 +50,7 @@ fun IntArray.rearrange(vararg permutedIndices: Int) {
 	}
 }
 
+/** Creates a new rearranged array. */
 fun IntArray.rearranged(vararg permutedIndices: Int): IntArray {
 	if (permutedIndices.size != size) {
 		throw IllegalArgumentException("Number of permutation indices ($permutedIndices) does not match array length ($size)")
