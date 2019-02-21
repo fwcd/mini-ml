@@ -1,8 +1,15 @@
 package fwcd.miniml.math
 
+/** Represents a shape permutation that swaps rows/columns of a matrix (= rank 2 nd-array). */
+private val MATRIX_TRANSPOSE: IntArray = intArrayOf(1, 0)
+
 /**
  * A mutable n-dimensional array. However, all non-assign
  * operations will not mutate this array.
+ *
+ * <p>In machine learning, these arrays are often referred
+ * to as "tensors", even though this definition of "tensor"
+ * is mathematically imprecise.</p>
  */
 class NDArray(
 	val values: DoubleArray,
@@ -132,6 +139,15 @@ class NDArray(
 		}
 		
 		return result
+	}
+	
+	/** Permutes the dimensions of this array (swaps rows and columns by default). */
+	fun transpose(permutation: IntArray = MATRIX_TRANSPOSE) {
+		if (rank != permutation.size) {
+			throw ShapeMismatchException("Permutation $permutation does not match shape $shape")
+		}
+		
+		// TODO
 	}
 	
 	/** Matrix-multiplies this nd-array with another, assuming both nd-arrays have rank 2. */
