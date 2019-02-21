@@ -1,5 +1,7 @@
 package fwcd.miniml.math
 
+import java.util.ArrayDeque
+
 /** Represents a shape permutation that swaps rows/columns of a matrix (= rank 2 nd-array). */
 private val MATRIX_TRANSPOSE: IntArray = intArrayOf(1, 0)
 
@@ -142,12 +144,26 @@ class NDArray(
 	}
 	
 	/** Permutes the dimensions of this array (swaps rows and columns by default). */
-	fun transpose(permutation: IntArray = MATRIX_TRANSPOSE) {
+	fun transpose(permutation: IntArray = MATRIX_TRANSPOSE): NDArray {
 		if (rank != permutation.size) {
-			throw ShapeMismatchException("Permutation $permutation does not match shape $shape")
+			throw ShapeMismatchException("Number of permutation indices $permutation does not match shape $shape")
 		}
 		
-		// TODO
+		val transposed = NDArray(shape.rearranged(*permutation))
+		
+		traverse {
+			// TODO
+		}
+		
+		return transposed
+	}
+	
+	private inline fun traverse(action: (IntArray) -> Unit) {
+		val coords = IntArray(rank + 1)
+		
+		while (coords[0] == 0) {
+			// TODO
+		}
 	}
 	
 	/** Matrix-multiplies this nd-array with another, assuming both nd-arrays have rank 2. */

@@ -23,3 +23,36 @@ fun toFlattenedSize(shape: IntArray): Int {
 	}
 	return size
 }
+
+fun IntArray.rearrange(vararg permutedIndices: Int) {
+	if (permutedIndices.size != size) {
+		throw IllegalArgumentException("Number of permutation indices ($permutedIndices) does not match array length ($size)")
+	}
+	
+	// Source: https://www.geeksforgeeks.org/reorder-a-array-according-to-given-indexes/
+	
+	for (i in 0 until size) {
+		// While permutedIndices[i] and this[i] not fixed
+		while (permutedIndices[i] != i) {
+			// Store values of target position
+			val oldTargetIndex = permutedIndices[permutedIndices[i]]
+			val oldTargetEntry = this[permutedIndices[i]]
+			
+			// Place this[i] at its target position and copy corrected index
+			this[permutedIndices[i]] = this[i]
+			permutedIndices[permutedIndices[i]] = permutedIndices[i]
+			
+			// Copy old target value to this[i] and permutedIndices[i]
+			permutedIndices[i] = oldTargetIndex
+			this[i] = oldTargetEntry
+		}
+	}
+}
+
+fun IntArray.rearranged(vararg permutedIndices: Int): IntArray {
+	if (permutedIndices.size != size) {
+		throw IllegalArgumentException("Number of permutation indices ($permutedIndices) does not match array length ($size)")
+	}
+	
+	return IntArray(size) { this[permutedIndices[it]] }
+}
