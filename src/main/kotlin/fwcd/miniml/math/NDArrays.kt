@@ -1,5 +1,11 @@
 package fwcd.miniml.math
 
+/** The scalar one as a constant. */
+val ONE = ones().apply { mutable = false }
+
+/** The scalar zero as a constant. */
+val ZERO = zeros().apply { mutable = false }
+
 /** Creates an n-dimensional array filled with zeros. */
 fun zeros(vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)), shape)
 

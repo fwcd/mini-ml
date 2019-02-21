@@ -21,6 +21,7 @@ class NDArray(
 		get() = values.size
 	val rank
 		get() = shape.size
+	var mutable = true
 	
 	constructor(shape: IntArray) : this(DoubleArray(toFlattenedSize(shape)), shape) {}
 	
@@ -35,6 +36,7 @@ class NDArray(
 	
 	/** Sets an element in this nd-array. */
 	operator fun set(vararg indices: Int, value: Double) {
+		ensureMutable()
 		values[toOffset(indices, shape)] = value
 	}
 	
@@ -82,6 +84,7 @@ class NDArray(
 	
 	/** Scales this nd-array in-place. */
 	operator fun timesAssign(scalar: Double) {
+		ensureMutable()
 		for (i in 0 until flatSize) {
 			values[i] *= scalar
 		}
@@ -104,6 +107,7 @@ class NDArray(
 	
 	/** Maps this nd-array elementwise in-place using given mapper function. */
 	inline fun mapAssign(mapper: (Double) -> Double) {
+		ensureMutable()
 		for (i in 0 until flatSize) {
 			values[i] = mapper(values[i])
 		}
@@ -111,10 +115,10 @@ class NDArray(
 	
 	/** Combines this nd-array elementwise in-place with another using an operation function. */
 	inline fun zipAssign(rhs: NDArray, operation: (Double, Double) -> Double) {
+		ensureMutable()
 		if (flatSize != rhs.flatSize) {
 			throw ShapeMismatchException("Can not perform elementwise operation on NDArrays with different flat sizes: $flatSize and ${rhs.flatSize}")
 		}
-		
 		for (i in 0 until flatSize) {
 			values[i] = operation(values[i], rhs.values[i])
 		}
@@ -152,7 +156,7 @@ class NDArray(
 		val transposed = NDArray(shape.rearranged(*permutation))
 		
 		traverse {
-			
+			// TODO
 		}
 		
 		return transposed
@@ -248,6 +252,12 @@ class NDArray(
 		override fun toString(): String {
 			stringify(-1)
 			return builder.toString()
+		}
+	}
+	
+	fun ensureMutable() {
+		if (!mutable) {
+			throw IllegalStateException("Mutating an immutable NDArray is not supported!")
 		}
 	}
 	
