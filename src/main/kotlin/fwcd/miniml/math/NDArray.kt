@@ -41,22 +41,22 @@ class NDArray(
 	}
 	
 	/** Computes the sum of this and another nd-array. */
-	operator fun plus(rhs: NDArray): NDArray = copy().also { it += rhs }
+	operator fun plus(rhs: NDArray): NDArray = zip(rhs) { a, b -> a + b }
 	
 	/** Computes the difference between this and another nd-array. */
-	operator fun minus(rhs: NDArray): NDArray = copy().also { it -= rhs }
+	operator fun minus(rhs: NDArray): NDArray = zip(rhs) { a, b -> a - b }
 	
 	/** Scales this nd-array. */
-	operator fun times(scalar: Double): NDArray = copy().also { it *= scalar }
+	operator fun times(scalar: Double): NDArray = map { it * scalar }
 	
 	/** Performs elementwise multiplication. */
-	operator fun times(rhs: NDArray): NDArray = copy().also { it *= rhs }
+	operator fun times(rhs: NDArray): NDArray = zip(rhs) { a, b -> a * b }
 	
 	/** Divides this nd-array (assuming both nd-arrays are of rank zero). */
-	operator fun div(scalar: NDArray): NDArray = copy().also { it /= scalar }
+	operator fun div(rhs: NDArray): NDArray = zip(rhs) { a, b -> a / b }
 	
 	/** Scales this nd-array (assuming both nd-arrays are of rank zero). */
-	operator fun rem(scalar: NDArray): NDArray = copy().also { it %= scalar }
+	operator fun rem(rhs: NDArray): NDArray = zip(rhs) { a, b -> a % b }
 	
 	/** Computes the multiplicative inverse of this nd-array. */
 	fun reciprocal() = map { 1.0 / it }
