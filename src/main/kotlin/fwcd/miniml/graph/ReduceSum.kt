@@ -17,9 +17,13 @@ class ReduceSum(
 	
 	override fun backward(gradient: NDArray) {
 		if (gradient.rank != 0) {
-			throw ShapeMismatchException("While backpropagating", 0, gradient.rank)
+			throw ShapeMismatchException("Gradient of reduce sum", 0, gradient.rank)
 		}
-		operands[0].cachedForward()?.shape?.let(::ones)?.let(operands[0]::backward)
+		
+		operands[0].cachedForward()?.shape
+			?.let(::ones)
+			?.let { it * gradient[0] }
+			?.let(operands[0]::backward)
 			?: throw MissingCachedInputArray("ReduceSum")
 	}
 }

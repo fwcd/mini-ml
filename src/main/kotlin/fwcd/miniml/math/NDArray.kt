@@ -62,6 +62,9 @@ class NDArray(
 	/** Computes the additive inverse of this nd-array in-place. */
 	fun unaryMinusAssign() = mapAssign { -it }
 	
+	/** Computes the elementwise square of this */
+	fun square() = this * this
+	
 	/** Adds an nd-array to this one in-place. */
 	operator fun plusAssign(rhs: NDArray) = zipAssign(rhs) { a, b -> a + b }
 	
