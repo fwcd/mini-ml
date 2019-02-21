@@ -165,16 +165,21 @@ class NDArray(
 	 * a copy should be created.
 	 */
 	internal inline fun traverse(consumer: (IntArray) -> Unit) {
-		val lastIndex = rank
-		val coords = IntArray(rank + 1)
+		val coords = IntArray(rank)
+		val lastIndex = rank - 1
+		var finished = false
 		
-		while (coords[0] == 0) {
+		while (!finished) {
 			consumer(coords)
 			coords[lastIndex]++
 			var j = lastIndex
-			while (j >= 0 && coords[j] >= shape[j - 1]) {
-				coords[j] = 0
-				coords[j - 1]++
+			while (j >= 0 && coords[j] >= shape[j]) {
+				if (j == 0) {
+					finished = true
+				} else {
+					coords[j] = 0
+					coords[j - 1]++
+				}
 				j--
 			}
 		}

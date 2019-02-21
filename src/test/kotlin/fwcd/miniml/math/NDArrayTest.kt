@@ -120,29 +120,29 @@ class NDArrayTest {
 				rowOfInts(2, 9, 3)
 			)
 		)
-		val traversed = mutableListOf<IntArray>()
+		val traversed = mutableListOf<List<Int>>()
 		arr.traverse {
-			traversed.add(it.copyOf())
+			traversed.add(it.toList())
 		}
 		assertThat(traversed, contains(
-			intArrayOf(0, 0, 0),
-			intArrayOf(0, 0, 1),
-			intArrayOf(0, 0, 2),
-			intArrayOf(0, 1, 0),
-			intArrayOf(0, 1, 1),
-			intArrayOf(0, 1, 2),
-			intArrayOf(1, 0, 0),
-			intArrayOf(1, 0, 1),
-			intArrayOf(1, 0, 2),
-			intArrayOf(1, 1, 0),
-			intArrayOf(1, 1, 1),
-			intArrayOf(1, 1, 2),
-			intArrayOf(2, 0, 0),
-			intArrayOf(2, 0, 1),
-			intArrayOf(2, 0, 2),
-			intArrayOf(2, 1, 0),
-			intArrayOf(2, 1, 1),
-			intArrayOf(2, 1, 2)
+			listOf(0, 0, 0),
+			listOf(0, 0, 1),
+			listOf(0, 0, 2),
+			listOf(0, 1, 0),
+			listOf(0, 1, 1),
+			listOf(0, 1, 2),
+			listOf(1, 0, 0),
+			listOf(1, 0, 1),
+			listOf(1, 0, 2),
+			listOf(1, 1, 0),
+			listOf(1, 1, 1),
+			listOf(1, 1, 2),
+			listOf(2, 0, 0),
+			listOf(2, 0, 1),
+			listOf(2, 0, 2),
+			listOf(2, 1, 0),
+			listOf(2, 1, 1),
+			listOf(2, 1, 2)
 		))
 	}
 	
