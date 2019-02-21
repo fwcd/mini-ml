@@ -15,13 +15,13 @@ class GraphTest {
 		val b = variable(scalarOf(10.0))
 		val c = variable(scalarOf(98.1))
 		val d = variable(scalarOf(-20.2))
-		val out = ((a * c.square()) - (a * b)) + d
+		val output = ((a * c.square()) - (a * b)) + d
 		
-		assertThat(out.forward(), approxEquals(scalarOf(197058.805)))
+		assertThat(output.forward(), approxEquals(scalarOf(197058.805)))
 		
 		// Test whether gradients are computed correctly
-		out.backward()
-		assertThat(c.gradient!!, approxEquals(scalarOfInt(41) * c.cachedForward()!!)) // dout / dc = 41 * c
-		assertThat(d.gradient!!, approxEquals(ONE)) // dout / dd = 1
+		output.backward()
+		assertThat(c.gradient!!, approxEquals(scalarOfInt(41) * c.cachedForward()!!)) // doutput / dc = 41 * c
+		assertThat(d.gradient!!, approxEquals(ONE)) // doutput / dd = 1
 	}
 }
