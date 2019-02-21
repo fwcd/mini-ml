@@ -136,7 +136,7 @@ class NDArrayTest {
 			intArrayOf(1, 0, 2),
 			intArrayOf(1, 1, 0),
 			intArrayOf(1, 1, 1),
-			intArrayOf(1, 1, 2)
+			intArrayOf(1, 1, 2),
 			intArrayOf(2, 0, 0),
 			intArrayOf(2, 0, 1),
 			intArrayOf(2, 0, 2),

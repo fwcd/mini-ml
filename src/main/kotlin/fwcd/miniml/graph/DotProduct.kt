@@ -13,4 +13,8 @@ class DotProduct(
 	override val operands: List<ValueNode> = listOf(lhs, rhs)
 	
 	override fun forward() = scalarOf(operands[0].forward().dot(operands[1].forward()))
+	
+	override fun backward(gradient: NDArray) {
+		TODO("Dot product backprop not implemented")
+	}
 }
