@@ -142,6 +142,19 @@ class NDArrayTest {
 	}
 	
 	@Test
+	fun testTranspose() {
+		val a = matrixOf(
+			rowOfInts(2, 3, 4),
+			rowOfInts(1, 0, -1)
+		)
+		assertThat(a.transpose(), approxEquals(matrixOf(
+			rowOfInts(2, 1),
+			rowOfInts(3, 0),
+			rowOfInts(4, -1)
+		)))
+	}
+	
+	@Test
 	fun testDestructuring() {
 		val (a, b, c) = matrix3DOf(
 			arrayOf(

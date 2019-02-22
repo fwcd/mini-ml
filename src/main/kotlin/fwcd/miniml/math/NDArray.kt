@@ -36,7 +36,9 @@ class NDArray(
 	operator fun get(vararg indices: Int): Double = values[toOffset(indices, shape)]
 	
 	/** Sets an element in this nd-array. */
-	operator fun set(vararg indices: Int, value: Double) {
+	operator fun set(vararg indices: Int, value: Double) = setAt(indices, value)
+	
+	private fun setAt(indices: IntArray, value: Double) {
 		ensureMutable()
 		values[toOffset(indices, shape)] = value
 	}
@@ -190,7 +192,7 @@ class NDArray(
 		val transposed = NDArray(shape.rearranged(*permutation))
 		
 		traverse {
-			// TODO
+			transposed.setAt(it.rearranged(*permutation), get(*it))
 		}
 		
 		return transposed
