@@ -11,7 +11,7 @@ val output = ((a * c.square()) - (a * b)) + d
 
 println("Forwardpass: ${output.forward()}")
 output.backward()
-println("Gradient of c w.r.t output: ${c.gradient}")
+println("Gradient of c with respect to 'output': ${c.gradient}")
 ```
 
 It supports modern Kotlin features such as destructuring declarations:
