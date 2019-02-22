@@ -16,7 +16,7 @@ private val MATRIX_TRANSPOSE: IntArray = intArrayOf(1, 0)
  */
 class NDArray(
 	val values: DoubleArray,
-	val shape: IntArray
+	var shape: IntArray
 ) {
 	var mutable = true
 	val flatSize
@@ -28,7 +28,7 @@ class NDArray(
 	
 	init {
 		if (values.size != toFlattenedSize(shape)) {
-			throw ShapeMismatchException("Value count of $values does not match shape $shape")
+			throw ShapeMismatchException("Value count of ${values.contentToString()} does not match shape ${shape.contentToString()}")
 		}
 	}
 	
@@ -186,7 +186,7 @@ class NDArray(
 	/** Permutes the dimensions of this array (swaps rows and columns by default). */
 	fun transpose(permutation: IntArray = MATRIX_TRANSPOSE): NDArray {
 		if (rank != permutation.size) {
-			throw ShapeMismatchException("Number of permutation indices $permutation does not match shape $shape")
+			throw ShapeMismatchException("Number of permutation indices ${permutation.contentToString()} does not match shape ${shape.contentToString()}")
 		}
 		
 		val transposed = NDArray(shape.rearranged(*permutation))
@@ -197,6 +197,20 @@ class NDArray(
 		
 		return transposed
 	}
+	
+	/** Reshapes this nd-array in-place. */
+	fun reshapeAssign(vararg newShape: Int) {
+		ensureMutable()
+		
+		if (toFlattenedSize(newShape) != flatSize) {
+			throw ShapeMismatchException("Flattened size ${toFlattenedSize(newShape)} (of ${newShape.contentToString()}) does not match flatSize $flatSize")
+		}
+		
+		shape = newShape
+	}
+	
+	/** Creates a new reshaped nd-array. */
+	fun reshape(vararg newShape: Int) = NDArray(values.copyOf(), newShape)
 	
 	/**
 	 * Traverses all possible coordinates in this array.

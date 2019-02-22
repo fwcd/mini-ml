@@ -2,7 +2,7 @@ package fwcd.miniml.math
 
 fun toOffset(indices: IntArray, shape: IntArray): Int {
 	if (indices.size != shape.size) {
-		throw IllegalArgumentException("Index count of $indices does not match shape $shape")
+		throw IllegalArgumentException("Index count of ${indices.contentToString()} does not match shape ${shape.contentToString()}")
 	}
 	
 	var offset: Int = 0
@@ -40,7 +40,7 @@ fun stride(shape: IntArray, dimIndex: Int): Int {
 /** Creates a new rearranged array. */
 fun IntArray.rearranged(vararg permutedIndices: Int): IntArray {
 	if (permutedIndices.size != size) {
-		throw IllegalArgumentException("Number of permutation indices ($permutedIndices) does not match array length ($size)")
+		throw IllegalArgumentException("Number of permutation indices (${permutedIndices.contentToString()}) does not match array length (size)")
 	}
 	
 	return IntArray(size) { this[permutedIndices[it]] }

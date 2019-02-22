@@ -155,6 +155,23 @@ class NDArrayTest {
 	}
 	
 	@Test
+	fun testReshape() {
+		val a = vectorOfInts(3, 2, 4, 9, 2, 9)
+		val mat = a.reshape(1, 6)
+		assertThat(a.reshape(6, 1), approxEquals(mat.transpose()))
+		assertThat(a.reshape(2, 3), approxEquals(matrixOf(
+			rowOfInts(3, 2, 4),
+			rowOfInts(9, 2, 9)
+		)))
+		a.reshapeAssign(3, 2)
+		assertThat(a, approxEquals(matrixOf(
+			rowOfInts(3, 2),
+			rowOfInts(4, 9),
+			rowOfInts(2, 9)
+		)))
+	}
+	
+	@Test
 	fun testDestructuring() {
 		val (a, b, c) = matrix3DOf(
 			arrayOf(
