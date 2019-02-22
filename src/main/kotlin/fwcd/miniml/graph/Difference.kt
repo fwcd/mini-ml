@@ -15,7 +15,7 @@ class Difference(
 	override fun forward() = operands[0].forward() - operands[1].forward()
 	
 	override fun backward(gradient: NDArray) {
-		val left = operands[0].cachedForward() ?: throw MissingCachedInputArray("Difference")
+		val left = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Difference")
 		
 		if (!left.shape.contentEquals(gradient.shape)) {
 			throw ShapeMismatchException("Gradient of minuend", left.shape, gradient.shape)

@@ -24,6 +24,6 @@ class ReduceSum(
 			?.let(::ones)
 			?.let { it * gradient[0] }
 			?.let(operands[0]::backward)
-			?: throw MissingCachedInputArray("ReduceSum")
+			?: throw MissingCachedInputArrayException("ReduceSum")
 	}
 }

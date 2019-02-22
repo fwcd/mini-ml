@@ -16,8 +16,8 @@ class DotProduct(
 	override fun forward() = scalarOf(operands[0].forward().dot(operands[1].forward()))
 	
 	override fun backward(gradient: NDArray) {
-		val left = operands[0].cachedForward() ?: throw MissingCachedInputArray("Dot product")
-		val right = operands[1].cachedForward() ?: throw MissingCachedInputArray("Dot product")
+		val left = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Dot product")
+		val right = operands[1].cachedForward() ?: throw MissingCachedInputArrayException("Dot product")
 		
 		if (!left.shape.contentEquals(gradient.shape)) {
 			throw ShapeMismatchException("Gradient of dot product", left.shape, gradient.shape)

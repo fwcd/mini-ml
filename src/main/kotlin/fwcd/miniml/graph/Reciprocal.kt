@@ -14,7 +14,7 @@ class Reciprocal(
 	override fun forward() = operands[0].forward().reciprocal()
 	
 	override fun backward(gradient: NDArray) {
-		val input = operands[0].cachedForward() ?: throw MissingCachedInputArray("Reciprocal")
+		val input = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Reciprocal")
 		
 		if (!input.shape.contentEquals(gradient.shape)) {
 			throw ShapeMismatchException("Gradient of reciprocal", input.shape, gradient.shape)

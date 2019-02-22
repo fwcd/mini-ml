@@ -14,7 +14,7 @@ class Negative(
 	override fun forward() = -operands[0].forward()
 	
 	override fun backward(gradient: NDArray) {
-		val input = operands[0].cachedForward() ?: throw MissingCachedInputArray("Negative")
+		val input = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Negative")
 		
 		if (!input.shape.contentEquals(gradient.shape)) {
 			throw ShapeMismatchException("Gradient of negative", input.shape, gradient.shape)

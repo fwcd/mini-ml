@@ -15,7 +15,7 @@ class Sum(
 	override fun forward() = operands[0].forward() + operands[1].forward()
 	
 	override fun backward(gradient: NDArray) {
-		val left = operands[0].cachedForward() ?: throw MissingCachedInputArray("Sum")
+		val left = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Sum")
 		
 		if (!left.shape.contentEquals(gradient.shape)) {
 			throw ShapeMismatchException("Gradient of summand", left.shape, gradient.shape)

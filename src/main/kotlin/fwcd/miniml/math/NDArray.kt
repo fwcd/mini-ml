@@ -167,7 +167,7 @@ class NDArray(
 	fun reduceSum(): Double = reduce { a, b -> a + b }
 	
 	/** Computes the vector dot product of this nd-another and another, assuming both nd-arrays have rank 1. */
-	fun dot(rhs: NDArray): Double {
+	infix fun dot(rhs: NDArray): Double {
 		if (rank != 1 || rhs.rank != 1) {
 			throw ShapeMismatchException("The dot product is only defined for vectors, not arrays of ranks $rank/${rhs.rank}")
 		} else if (shape[0] != rhs.shape[0]) {
@@ -240,7 +240,7 @@ class NDArray(
 	}
 	
 	/** Matrix-multiplies this nd-array with another, assuming both nd-arrays have rank 2. */
-	fun matmul(rhs: NDArray): NDArray {
+	infix fun matmul(rhs: NDArray): NDArray {
 		if (rank != 2 || rhs.rank != 2) {
 			throw ShapeMismatchException("Matrix multiplication is only defined for two-dimensional matrices, not arrays of ranks $rank/${rhs.rank}")
 		} else if (shape[1] != rhs.shape[0]) {
