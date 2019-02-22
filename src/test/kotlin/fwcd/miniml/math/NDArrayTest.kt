@@ -90,6 +90,10 @@ class NDArrayTest {
 			rowOfInts(7, 8),
 			rowOfInts(9, 2)
 		)))
+		
+		val vec = vectorOfInts(2, 5, 6)
+		assertThat(matA.matmul(vec), approxEquals(vectorOfInts(22, 14)))
+		assertThat(matA.matmul(vec.reshape(3, 1)), approxEquals(matA.matmul(vec).reshape(2, 1)))
 	}
 	
 	@Test

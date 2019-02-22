@@ -241,28 +241,44 @@ class NDArray(
 	
 	/** Matrix-multiplies this nd-array with another, assuming both nd-arrays have rank 2. */
 	infix fun matmul(rhs: NDArray): NDArray {
-		if (rank != 2 || rhs.rank != 2) {
-			throw ShapeMismatchException("Matrix multiplication is only defined for two-dimensional matrices, not arrays of ranks $rank/${rhs.rank}")
-		} else if (shape[1] != rhs.shape[0]) {
+		if (shape[1] != rhs.shape[0]) {
 			throw ShapeMismatchException("The width of the left matrix (${shape[0]}) has to match the height of the right matrix (${shape[1]})")
-		}
-		
-		val dotCount = shape[1]
-		val productHeight = shape[0]
-		val productWidth = rhs.shape[1]
-		val product = NDArray(intArrayOf(productHeight, productWidth))
-		
-		for (y in 0 until productHeight) {
-			for (x in 0 until productWidth) {
+		} else if (rank == 2 && rhs.rank == 1) {
+			// Multiply matrix by vector (assuming the vector is a column)
+			val dotCount = shape[1]
+			val productHeight = shape[0]
+			val product = NDArray(intArrayOf(productHeight))
+			
+			for (y in 0 until productHeight) {
 				var dot: Double = 0.0
 				for (i in 0 until dotCount) {
-					dot += this[y, i] * rhs[i, x]
+					dot += this[y, i] * rhs[i]
 				}
-				product[y, x] = dot
+				product[y] = dot
 			}
+			
+			return product
+		} else if (rank != 2 || rhs.rank != 2) {
+			throw ShapeMismatchException("Matrix multiplication is only defined for two-dimensional matrices, not arrays of ranks $rank/${rhs.rank}")
+		} else {
+			// Multiply matrix by matrix
+			val dotCount = shape[1]
+			val productHeight = shape[0]
+			val productWidth = rhs.shape[1]
+			val product = NDArray(intArrayOf(productHeight, productWidth))
+			
+			for (y in 0 until productHeight) {
+				for (x in 0 until productWidth) {
+					var dot: Double = 0.0
+					for (i in 0 until dotCount) {
+						dot += this[y, i] * rhs[i, x]
+					}
+					product[y, x] = dot
+				}
+			}
+			
+			return product
 		}
-		
-		return product
 	}
 	
 	/** Copies this nd-array. */

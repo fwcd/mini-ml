@@ -1,5 +1,7 @@
 package fwcd.miniml.math
 
+import kotlin.random.Random
+
 /** The scalar one as a constant. */
 val ONE = ones().apply { mutable = false }
 
@@ -14,6 +16,9 @@ fun ones(vararg shape: Int) = fill(1.0, *shape)
 
 /** Creates an n-dimensional array filled with a scalar value. */
 fun fill(value: Double, vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)) { value }, shape)
+
+/** Creates an n-dimensional array filled with uniformly distributed random values in the given range. */
+fun randoms(low: Double, high: Double, vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)) { Random.nextDouble(low, high) }, shape)
 
 /** Syntactic sugar for doubleArrayOf. */
 fun rowOf(vararg values: Double): DoubleArray = values
