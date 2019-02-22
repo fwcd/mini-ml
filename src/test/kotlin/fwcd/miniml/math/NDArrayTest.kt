@@ -93,7 +93,20 @@ class NDArrayTest {
 		
 		val vec = vectorOfInts(2, 5, 6)
 		assertThat(matA.matmul(vec), approxEquals(vectorOfInts(22, 14)))
-		assertThat(matA.matmul(vec.reshape(3, 1)), approxEquals(matA.matmul(vec).reshape(2, 1)))
+		assertThat(matA.matmul(vec.asColumnMatrix()), approxEquals(matA.matmul(vec).asColumnMatrix()))
+	}
+	
+	@Test
+	fun testVectorToMatrix() {
+		val vec = vectorOfInts(5, 8, 3)
+		assertThat(vec.asRowMatrix(), approxEquals(matrixOf(
+			rowOfInts(5, 8, 3)
+		)))
+		assertThat(vec.asColumnMatrix(), approxEquals(matrixOf(
+			rowOfInts(5),
+			rowOfInts(8),
+			rowOfInts(3)
+		)))
 	}
 	
 	@Test

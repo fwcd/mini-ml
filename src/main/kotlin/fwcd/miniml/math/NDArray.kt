@@ -297,6 +297,22 @@ class NDArray(
 		return true
 	}
 	
+	/** Reshapes this nd-array to a column matrix, assuming it has rank 1 (i.e. is a vector) */
+	fun asColumnMatrix(): NDArray {
+		if (rank != 1) {
+			throw ShapeMismatchException("Can only convert nd-arrays of rank 1 (vectors) to column matrices")
+		}
+		return reshape(flatSize, 1)
+	}
+	
+	/** Reshapes this nd-array to a row matrix, assuming it has rank 1 (i.e. is a vector) */
+	fun asRowMatrix(): NDArray {
+		if (rank != 1) {
+			throw ShapeMismatchException("Can only convert nd-arrays of rank 1 (vectors) to row matrices")
+		}
+		return reshape(1, flatSize)
+	}
+	
 	private inner class Stringifier(private var offset: Int = 0, private val builder: StringBuilder = StringBuilder()) {
 		fun stringify(dimIndex: Int) {
 			if (dimIndex == (rank - 1)) {
