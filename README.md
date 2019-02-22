@@ -18,8 +18,8 @@ It supports modern Kotlin features such as destructuring declarations:
 
 ```kotlin
 val (rowA, rowB) = matrixOf(
-    rowOfInts(2, 5, 3),
-    rowOfInts(0, 0, 1)
+    rowOf(2.0, 5.3, 7.8),
+    rowOf(0.0, 0.9, 1.1)
 )
 val (cellA, cellB, cellC) = rowA
 ```
