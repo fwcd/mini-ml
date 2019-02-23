@@ -26,6 +26,9 @@ class GradientNode(private val delegate: ValueNode) : ValueNode {
 	override fun cachedForward(): NDArray? = cached
 	
 	override fun backward(gradient: NDArray) {
+		if (cached == null) {
+			throw IllegalStateException("Calling .backward() without a forwardpass is not permitted. Try inserting a .forward() call before.")
+		}
 		this.gradient?.also { it += gradient } ?: run {
 			this.gradient = gradient
 		}
