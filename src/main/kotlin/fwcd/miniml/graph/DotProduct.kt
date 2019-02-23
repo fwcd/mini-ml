@@ -19,10 +19,6 @@ class DotProduct(
 		val left = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Dot product")
 		val right = operands[1].cachedForward() ?: throw MissingCachedInputArrayException("Dot product")
 		
-		if (!left.shape.contentEquals(gradient.shape)) {
-			throw ShapeMismatchException("Gradient of dot product", left.shape, gradient.shape)
-		}
-		
 		operands[0].backward(right * gradient)
 		operands[1].backward(left * gradient)
 	}

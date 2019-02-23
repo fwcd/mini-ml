@@ -24,8 +24,16 @@ class MatrixProduct(
 		val left = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Matrix product")
 		val right = operands[1].cachedForward() ?: throw MissingCachedInputArrayException("Matrix product")
 		
-		if (!left.shape.contentEquals(gradient.shape)) {
-			throw ShapeMismatchException("Gradient of matrix product", left.shape, gradient.shape)
+		if (left.rank != 2) {
+			throw ShapeMismatchException("Left factor of the matrix product ($left) should be a matrix")
+		} else if (right.rank != 2) {
+			throw ShapeMismatchException("Right factor of the matrix product ($right) should be a matrix")
+		}
+		
+		val expectedShape = intArrayOf(left.shape[0], right.shape[1])
+		
+		if (!gradient.shape.contentEquals(expectedShape)) {
+			throw ShapeMismatchException("Gradient of matrix product", expectedShape, gradient.shape)
 		}
 		
 		// Source: https://github.com/tensorflow/tensorflow/blob/9d508106b32eb6518912501d29a80ff9967dfe05/tensorflow/core/ops/math_grad.cc#L813-L827

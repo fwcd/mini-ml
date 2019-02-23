@@ -11,6 +11,11 @@ import fwcd.miniml.math.NDArray
 class GradientNode(private val delegate: ValueNode) : ValueNode {
 	private var cached: NDArray? = null
 	var gradient: NDArray? = null
+	var value: NDArray?
+		get() = (delegate as? Placeholder)?.value
+		set(newValue: NDArray?) = (delegate as? Placeholder)
+			?.let { it.value = newValue ?: throw IllegalArgumentException("Null should not be assigned to GradientNode.value") }
+			?: Unit
 	override val operands: List<ValueNode>
 		get() = delegate.operands
 	
@@ -41,9 +46,11 @@ class GradientNode(private val delegate: ValueNode) : ValueNode {
 	
 	fun reciprocal(): GradientNode = GradientNode(Reciprocal(this))
 	
-	fun dot(rhs: ValueNode): GradientNode = GradientNode(DotProduct(this, rhs))
+	infix fun dot(rhs: ValueNode): GradientNode = GradientNode(DotProduct(this, rhs))
 	
-	fun matmul(rhs: ValueNode): GradientNode = GradientNode(MatrixProduct(this, rhs))
+	infix fun matmul(rhs: ValueNode): GradientNode = GradientNode(MatrixProduct(this, rhs))
 	
 	fun square(): GradientNode = GradientNode(ElementwiseSquare(this))
+	
+	fun reduceSum(): GradientNode = GradientNode(ReduceSum(this))
 }

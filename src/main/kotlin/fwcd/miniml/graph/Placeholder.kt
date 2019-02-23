@@ -7,7 +7,7 @@ import fwcd.miniml.math.NDArray
  * Usually, these are inputs to the computation graph.
  */
 class Placeholder(
-	private val value: NDArray
+	var value: NDArray
 ) : ValueNode {
 	override val operands: List<ValueNode> = emptyList()
 	

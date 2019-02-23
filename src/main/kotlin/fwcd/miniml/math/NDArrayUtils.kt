@@ -1,7 +1,10 @@
 package fwcd.miniml.math
 
 fun toOffset(indices: IntArray, shape: IntArray): Int {
-	if (indices.size != shape.size) {
+	if (indices.size == 1 && shape.size == 0) {
+		// Return scalar value
+		return indices[0]
+	} else if (indices.size != shape.size) {
 		throw IllegalArgumentException("Index count of ${indices.contentToString()} does not match shape ${shape.contentToString()}")
 	}
 	

@@ -29,9 +29,18 @@ class GraphTest {
 	
 	@Test
 	fun testMatMulGraph() {
-		// val x = placeholder(zeros(3))
-		// val w = variable(randoms(3, 3))
-		// val b = variable(randoms())
-		// TODO
+		val x = placeholder(zeros(3))
+		val w = variable(randoms(-10.0, 10.0, 3, 3))
+		val b = variable(randoms(-10.0, 10.0, 3))
+		val expected = x.square()
+		val output = (w matmul x) + b
+		val cost = (expected - output).square().reduceSum()
+		
+		for (i in 0 until 100) {
+			x.value = randoms(0.0, 3.0, 3)
+			println("Cost: ${cost.forward()}")
+			cost.backward()
+			w.apply(-w.gradient!! * 0.01)
+		}
 	}
 }
