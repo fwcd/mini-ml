@@ -281,6 +281,12 @@ class NDArray(
 		}
 	}
 	
+	/** Returns the value if this nd-array is a scalar (or 1-element vector/matrix/...). */
+	fun toScalar(): Double? = if (flatSize == 1) values[0] else null
+	
+	/** Unwraps and returns the value if this nd-array is a scalar (or 1-element vector/matrix/...), otherwise throws an exception. */
+	fun expectScalar(): Double = toScalar() ?: throw IllegalStateException("${toString()} is not a scalar")
+	
 	/** Copies this nd-array. */
 	fun copy() = NDArray(values.copyOf(), shape.copyOf())
 	
