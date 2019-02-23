@@ -20,42 +20,44 @@ class MatrixProduct(
 		return left.matmul(right)
 	}
 	
-	override fun backward(rawGradient: NDArray) {
+	override fun backward(gradient: NDArray) {
 		val left = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Matrix product")
 		var right = operands[1].cachedForward() ?: throw MissingCachedInputArrayException("Matrix product")
-		val gradient: NDArray
+		val matGradient: NDArray
 		
 		if (left.rank != 2) {
 			throw ShapeMismatchException("Left factor of the matrix product ($left) should be a matrix")
 		} else if (right.rank == 1) {
-			// Handle the special case of matrix-vector multiplication
+			// Handle the special case of matrix-vector multiplication,
+			// in which case the passed gradient is a vector which needs
+			// to be converted to a column matrix
 			right = right.asColumnMatrix()
-			gradient = rawGradient.asColumnMatrix()
+			matGradient = gradient.asColumnMatrix()
 		} else if (right.rank != 2) {
 			throw ShapeMismatchException("Right factor of the matrix product ($right) should be a matrix")
 		} else {
-			gradient = rawGradient
+			matGradient = gradient
 		}
 		
 		val expectedShape = intArrayOf(left.shape[0], right.shape[1])
 		
-		if (!gradient.shape.contentEquals(expectedShape)) {
-			throw ShapeMismatchException("Gradient of matrix product", expectedShape, gradient.shape)
+		if (!matGradient.shape.contentEquals(expectedShape)) {
+			throw ShapeMismatchException("Gradient of matrix product", expectedShape, matGradient.shape)
 		}
 		
 		// Source: https://github.com/tensorflow/tensorflow/blob/9d508106b32eb6518912501d29a80ff9967dfe05/tensorflow/core/ops/math_grad.cc#L813-L827
 		
 		val leftGradient = when {
-			!transposeLeft && !transposeRight -> gradient matmul right.transpose()
-			!transposeLeft && transposeRight -> gradient matmul right
-			transposeLeft && !transposeRight -> right matmul gradient.transpose()
-			else /* transpose both */ -> right.transpose() matmul gradient.transpose()
+			!transposeLeft && !transposeRight -> matGradient matmul right.transpose()
+			!transposeLeft && transposeRight -> matGradient matmul right
+			transposeLeft && !transposeRight -> right matmul matGradient.transpose()
+			else /* transpose both */ -> right.transpose() matmul matGradient.transpose()
 		}
 		val rightGradient = when {
-			!transposeLeft && !transposeRight -> left.transpose() matmul gradient
-			!transposeLeft && transposeRight -> gradient.transpose() matmul left
-			transposeLeft && !transposeRight -> left matmul gradient
-			else /* transpose both */ -> gradient.transpose() matmul left.transpose()
+			!transposeLeft && !transposeRight -> left.transpose() matmul matGradient
+			!transposeLeft && transposeRight -> matGradient.transpose() matmul left
+			transposeLeft && !transposeRight -> left matmul matGradient
+			else /* transpose both */ -> matGradient.transpose() matmul left.transpose()
 		}
 		
 		operands[0].backward(leftGradient)

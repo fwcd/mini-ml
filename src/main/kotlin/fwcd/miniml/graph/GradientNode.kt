@@ -23,6 +23,14 @@ class GradientNode(private val delegate: ValueNode) : ValueNode {
 		cached = it
 	}
 	
+	/** Recursively clears gradients. */
+	fun clearGradients() {
+		gradient = null
+		for (parent in delegate.operands) {
+			(parent as? GradientNode)?.clearGradients()
+		}
+	}
+	
 	override fun cachedForward(): NDArray? = cached
 	
 	override fun backward(gradient: NDArray) {

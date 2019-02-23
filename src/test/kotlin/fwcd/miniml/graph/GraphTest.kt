@@ -7,6 +7,9 @@ import fwcd.miniml.math.scalarOfInt
 import fwcd.miniml.math.zeros
 import fwcd.miniml.math.randoms
 import fwcd.miniml.math.approxEquals
+import fwcd.miniml.math.matrixOf
+import fwcd.miniml.math.vectorOf
+import fwcd.miniml.math.rowOf
 import fwcd.miniml.math.ONE
 import java.io.File
 import org.hamcrest.Matchers.*
@@ -59,6 +62,35 @@ class GraphTest {
 	}
 	
 	@Test
+	fun testMatMulGraphGradients1() {
+		val x = placeholder(vectorOf(2.0, 1.5))
+		val w = variable(matrixOf(
+			rowOf(23.4, 25.0),
+			rowOf(-10.8, 0.8)
+		))
+		val b = variable(vectorOf(23.3, 32.1))
+		val expected = x.square()
+		val output = (w matmul x) + b
+		val diffs = (expected - output).square()
+		val cost = diffs.reduceSum()
+		
+		assertThat(diffs.forward(), approxEquals(vectorOf(10732.9609, 89.3025)))
+		assertThat(output.forward(), approxEquals(vectorOf(107.6, 11.7)))
+		assertThat(expected.forward(), approxEquals(vectorOf(4.0, 2.25)))
+		assertThat(cost.forward(), approxEquals(scalarOf(10822.2637)))
+		
+		cost.backward()
+		assertThat(cost.gradient!!, approxEquals(ONE))
+		assertThat(diffs.gradient!!, approxEquals(vectorOf(1.0, 1.0)))
+		// assertThat(output.gradient!!, approxEquals(vectorOf(207.2, 18.9)))
+		assertThat(w.gradient!!, approxEquals(matrixOf(
+			rowOf(414.4, 310.8),
+			rowOf(37.8, 28.35)
+		)))
+		assertThat(b.gradient!!, approxEquals(vectorOf(207.2, 18.9)))
+	}
+	
+	@Test
 	fun testScalarGraphOptimization() {
 		val x = placeholder(zeros())
 		val w = variable(randoms(-10.0, 10.0))
@@ -79,7 +111,7 @@ class GraphTest {
 	}
 	
 	@Test
-	fun testMatMulGraph() {
+	fun testMatMulGraphOptimization() {
 		val x = placeholder(zeros(3))
 		val w = variable(randoms(-10.0, 10.0, 3, 3))
 		val b = variable(randoms(-10.0, 10.0, 3))
