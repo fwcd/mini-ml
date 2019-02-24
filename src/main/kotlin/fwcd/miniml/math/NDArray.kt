@@ -136,10 +136,16 @@ class NDArray(
 	}
 	
 	/** Combines this nd-array elementwise with another using an operation function. */
-	inline fun zip(rhs: NDArray, operation: (Double, Double) -> Double): NDArray = copy().also { it.zipAssign(rhs, operation) }
+	inline fun zip(rhs: NDArray, operation: (Double, Double) -> Double): NDArray = copy(mutableCopy = true).also {
+		it.zipAssign(rhs, operation)
+		it.mutable = mutable
+	}
 	
 	/** Maps this nd-array elementwise using given mapper function. */
-	inline fun map(mapper: (Double) -> Double): NDArray = copy().also { it.mapAssign(mapper) }
+	inline fun map(mapper: (Double) -> Double): NDArray = copy(mutableCopy = true).also {
+		it.mapAssign(mapper)
+		it.mutable = mutable
+	}
 	
 	/** Maps this nd-array elementwise in-place using given mapper function. */
 	inline fun mapAssign(mapper: (Double) -> Double) {
@@ -288,7 +294,7 @@ class NDArray(
 	fun expectScalar(): Double = toScalar() ?: throw IllegalStateException("${toString()} is not a scalar")
 	
 	/** Copies this nd-array. */
-	fun copy() = NDArray(values.copyOf(), shape.copyOf(), mutable)
+	fun copy(mutableCopy: Boolean = mutable) = NDArray(values.copyOf(), shape.copyOf(), mutableCopy)
 	
 	/** Checks whether this nd-array equals another one within a given tolerance. */
 	fun equals(rhs: NDArray, tolerance: Double): Boolean {

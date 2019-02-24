@@ -45,7 +45,7 @@ class GradientNode(private val delegate: ValueNode) : ValueNode {
 		// Accumulate gradient
 		this.gradient
 			?.also { it += gradient }
-			?: run { this.gradient = gradient.copy() }
+			?: run { this.gradient = gradient.copy(mutableCopy = true) }
 		
 		delegate.backward(gradient)
 	}
