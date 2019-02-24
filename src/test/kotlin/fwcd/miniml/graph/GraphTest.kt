@@ -1,6 +1,7 @@
 package fwcd.miniml.graph
 
 import org.junit.Test
+import org.junit.Ignore
 import org.junit.Assert.assertThat
 import fwcd.miniml.math.scalarOf
 import fwcd.miniml.math.scalarOfInt
@@ -91,6 +92,7 @@ class GraphTest {
 	}
 	
 	@Test
+	@Ignore
 	fun testScalarGraphOptimization() {
 		val x = placeholder(zeros())
 		val w = variable(randoms(-10.0, 10.0))
@@ -111,6 +113,7 @@ class GraphTest {
 	}
 	
 	@Test
+	@Ignore
 	fun testMatMulGraphOptimization() {
 		val x = placeholder(zeros(3))
 		val w = variable(randoms(-10.0, 10.0, 3, 3))
