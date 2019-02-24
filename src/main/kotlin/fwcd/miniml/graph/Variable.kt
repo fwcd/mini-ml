@@ -23,5 +23,5 @@ class Variable(
 		LOG.debug("Backpropagating through variable: {}", value)
 	}
 	
-	override fun toString(): String = "Var. $value"
+	override fun toString(): String = "(var $value)"
 }

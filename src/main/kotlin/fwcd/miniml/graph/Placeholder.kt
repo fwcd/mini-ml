@@ -20,5 +20,5 @@ class Placeholder(
 		LOG.debug("Backpropagating through placeholder: {}", value)
 	}
 	
-	override fun toString(): String = "P.h. $value"
+	override fun toString(): String = "(ph $value)"
 }

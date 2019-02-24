@@ -19,5 +19,5 @@ class Constant(
 		LOG.debug("Backpropagating through constant: {}", value)
 	}
 	
-	override fun toString(): String = "Const. $value"
+	override fun toString(): String = "(const $value)"
 }
