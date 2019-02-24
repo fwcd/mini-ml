@@ -137,6 +137,24 @@ class GraphTest {
 	}
 	
 	@Test
+	fun testCos() {
+		val x = variable(scalarOf(7.7), name = "x")
+		val c = x.cos()
+		assertThat(c.forward(), approxEquals(scalarOf(0.153373)))
+		c.backward()
+		assertThat(x.gradient!!, approxEquals(scalarOf(-0.9882)))
+	}
+	
+	@Test
+	fun testTan() {
+		val x = variable(scalarOf(2.1), name = "x")
+		val t = x.tan()
+		assertThat(t.forward(), approxEquals(scalarOf(-1.709846)))
+		t.backward()
+		assertThat(x.gradient!!, approxEquals(scalarOf(3.9236)))
+	}
+	
+	@Test
 	@Ignore
 	fun testScalarGraphOptimization() {
 		val x = placeholder(zeros())
