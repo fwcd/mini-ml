@@ -21,7 +21,7 @@ class Variable(
 	}
 	
 	override fun backward(gradient: NDArray) {
-		LOG.debug("Backpropagating through variable: {} {}", name ?: "var", value)
+		LOG.debug("Backpropagating through variable: {} {} - gradient: {}", name ?: "var", value, gradient)
 	}
 	
 	override fun toString(): String = name ?: "(var $value)"
