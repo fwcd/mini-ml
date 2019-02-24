@@ -63,12 +63,12 @@ class GraphTest {
 	
 	@Test
 	fun testMatMulGraphGradients1() {
-		val x = placeholder(vectorOf(2.0, 1.5))
+		val x = placeholder(vectorOf(2.0, 1.5), name = "x")
 		val w = variable(matrixOf(
 			rowOf(23.4, 25.0),
 			rowOf(-10.8, 0.8)
-		))
-		val b = variable(vectorOf(23.3, 32.1))
+		), name = "w")
+		val b = variable(vectorOf(23.3, 32.1), name = "b")
 		val expected = x.square()
 		val output = (w matmul x) + b
 		val diffs = (expected - output).square()

@@ -17,8 +17,8 @@ class Constant(
 	override fun forward() = value
 	
 	override fun backward(gradient: NDArray) {
-		LOG.debug("Backpropagating through constant: {}", value)
+		LOG.debug("Backpropagating through constant: {} {}", name ?: "const", value)
 	}
 	
-	override fun toString(): String = "(const $value${name?.let { " $it" } ?: ""})"
+	override fun toString(): String = name ?: "(const $value)"
 }

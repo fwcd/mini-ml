@@ -18,8 +18,8 @@ class Placeholder(
 	override fun forward() = value
 	
 	override fun backward(gradient: NDArray) {
-		LOG.debug("Backpropagating through placeholder: {}", value)
+		LOG.debug("Backpropagating through placeholder: {} {}", name ?: "ph", value)
 	}
 	
-	override fun toString(): String = "(ph $value${name?.let { " $it" } ?: ""})"
+	override fun toString(): String = name ?: "(ph $value)"
 }
