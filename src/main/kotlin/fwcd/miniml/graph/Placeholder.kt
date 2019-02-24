@@ -1,6 +1,9 @@
 package fwcd.miniml.graph
 
 import fwcd.miniml.math.NDArray
+import fwcd.miniml.utils.loggerFor
+
+private val LOG = loggerFor<Placeholder>()
 
 /**
  * A variable that is not optimized through gradients.
@@ -13,5 +16,9 @@ class Placeholder(
 	
 	override fun forward() = value
 	
-	override fun backward(gradient: NDArray) {}
+	override fun backward(gradient: NDArray) {
+		LOG.debug("Backpropagating through placeholder: {}", value)
+	}
+	
+	override fun toString(): String = "P.h. $value"
 }

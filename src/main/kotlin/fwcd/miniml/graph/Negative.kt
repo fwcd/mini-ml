@@ -2,6 +2,9 @@ package fwcd.miniml.graph
 
 import fwcd.miniml.math.NDArray
 import fwcd.miniml.math.ShapeMismatchException
+import fwcd.miniml.utils.loggerFor
+
+private val LOG = loggerFor<Negative>()
 
 /**
  * The elementwise additive inverse of a value.
@@ -14,6 +17,7 @@ class Negative(
 	override fun forward() = -operands[0].forward()
 	
 	override fun backward(gradient: NDArray) {
+		LOG.debug("Backpropagating through negative: {}", this)
 		val input = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Negative")
 		
 		if (!input.shape.contentEquals(gradient.shape)) {
@@ -22,4 +26,6 @@ class Negative(
 		
 		operands[0].backward(-gradient)
 	}
+	
+	override fun toString(): String = "-${operands[0]}"
 }

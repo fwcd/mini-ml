@@ -2,6 +2,9 @@ package fwcd.miniml.graph
 
 import fwcd.miniml.math.NDArray
 import fwcd.miniml.math.ShapeMismatchException
+import fwcd.miniml.utils.loggerFor
+
+private val LOG = loggerFor<MatrixProduct>()
 
 /**
  * The result of a matrix multiplication.
@@ -21,6 +24,7 @@ class MatrixProduct(
 	}
 	
 	override fun backward(gradient: NDArray) {
+		LOG.debug("Backpropagating through matrix product: {}", this)
 		val left = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Matrix product")
 		var right = operands[1].cachedForward() ?: throw MissingCachedInputArrayException("Matrix product")
 		val matGradient: NDArray
@@ -63,4 +67,6 @@ class MatrixProduct(
 		operands[0].backward(leftGradient)
 		operands[1].backward(rightGradient)
 	}
+	
+	override fun toString(): String = "(${operands[0]} matmul ${operands[1]})"
 }
