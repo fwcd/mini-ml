@@ -16,9 +16,9 @@ private val MATRIX_TRANSPOSE: IntArray = intArrayOf(1, 0)
  */
 class NDArray(
 	val values: DoubleArray,
-	var shape: IntArray
+	var shape: IntArray,
+	var mutable: Boolean = true
 ) {
-	var mutable = true
 	val flatSize
 		get() = values.size
 	val rank
@@ -132,7 +132,7 @@ class NDArray(
 		val end = start + outerStride
 		val innerShape = shape.copyOfRange(1, shape.size)
 		val innerValues = values.copyOfRange(start, end)
-		return NDArray(innerValues, innerShape)
+		return NDArray(innerValues, innerShape, mutable)
 	}
 	
 	/** Combines this nd-array elementwise with another using an operation function. */
@@ -195,7 +195,7 @@ class NDArray(
 			transposed.setAt(it.rearranged(*permutation), get(*it))
 		}
 		
-		return transposed
+		return transposed.also { it.mutable = mutable }
 	}
 	
 	/** Reshapes this nd-array in-place. */
@@ -210,7 +210,7 @@ class NDArray(
 	}
 	
 	/** Creates a new reshaped nd-array. */
-	fun reshape(vararg newShape: Int) = NDArray(values.copyOf(), newShape)
+	fun reshape(vararg newShape: Int) = NDArray(values.copyOf(), newShape, mutable)
 	
 	/**
 	 * Traverses all possible coordinates in this array.
@@ -257,7 +257,7 @@ class NDArray(
 				product[y] = dot
 			}
 			
-			return product
+			return product.also { it.mutable = mutable }
 		} else if (rank != 2 || rhs.rank != 2) {
 			throw ShapeMismatchException("Matrix multiplication is only defined for two-dimensional matrices, not arrays of ranks $rank/${rhs.rank}")
 		} else {
@@ -277,7 +277,7 @@ class NDArray(
 				}
 			}
 			
-			return product
+			return product.also { it.mutable = mutable }
 		}
 	}
 	
@@ -288,7 +288,7 @@ class NDArray(
 	fun expectScalar(): Double = toScalar() ?: throw IllegalStateException("${toString()} is not a scalar")
 	
 	/** Copies this nd-array. */
-	fun copy() = NDArray(values.copyOf(), shape.copyOf())
+	fun copy() = NDArray(values.copyOf(), shape.copyOf(), mutable)
 	
 	/** Checks whether this nd-array equals another one within a given tolerance. */
 	fun equals(rhs: NDArray, tolerance: Double): Boolean {

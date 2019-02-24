@@ -1,6 +1,9 @@
 package fwcd.miniml.graph
 
 import fwcd.miniml.math.NDArray
+import fwcd.miniml.utils.loggerFor
+
+private val LOG = loggerFor<GradientNode>()
 
 /**
  * A GradientNode wraps an (immutable) ValueNode
@@ -34,12 +37,16 @@ class GradientNode(private val delegate: ValueNode) : ValueNode {
 	override fun cachedForward(): NDArray? = cached
 	
 	override fun backward(gradient: NDArray) {
+		LOG.trace("Backpropagating through GradientNode: {} - stored gradient: {} - propagated gradient: {}", this, this.gradient, gradient)
 		if (cached == null) {
 			throw IllegalStateException("Calling .backward() without a forwardpass is not permitted. Try inserting a .forward() call before.")
 		}
-		this.gradient?.also { it += gradient } ?: run {
-			this.gradient = gradient
-		}
+		
+		// Accumulate gradient
+		this.gradient
+			?.also { it += gradient }
+			?: run { this.gradient = gradient.copy() }
+		
 		delegate.backward(gradient)
 	}
 	

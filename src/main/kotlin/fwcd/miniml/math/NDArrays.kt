@@ -9,16 +9,16 @@ val ONE = ones().apply { mutable = false }
 val ZERO = zeros().apply { mutable = false }
 
 /** Creates an n-dimensional array filled with zeros. */
-fun zeros(vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)), shape)
+fun zeros(vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)), shape, mutable = false)
 
 /** Creates an n-dimensional array filled with ones. */
 fun ones(vararg shape: Int) = fill(1.0, *shape)
 
 /** Creates an n-dimensional array filled with a scalar value. */
-fun fill(value: Double, vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)) { value }, shape)
+fun fill(value: Double, vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)) { value }, shape, mutable = false)
 
 /** Creates an n-dimensional array filled with uniformly distributed random values in the given range. */
-fun randoms(low: Double, high: Double, vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)) { Random.nextDouble(low, high) }, shape)
+fun randoms(low: Double, high: Double, vararg shape: Int) = NDArray(DoubleArray(toFlattenedSize(shape)) { Random.nextDouble(low, high) }, shape, mutable = false)
 
 /** Syntactic sugar for doubleArrayOf. */
 fun rowOf(vararg values: Double): DoubleArray = values
@@ -33,16 +33,16 @@ fun rowOfInts(vararg values: Int): DoubleArray {
 }
 
 /** Creates a 1-dimensional array of the given ints. */
-fun vectorOfInts(vararg values: Int) = NDArray(rowOfInts(*values), intArrayOf(values.size))
+fun vectorOfInts(vararg values: Int) = NDArray(rowOfInts(*values), intArrayOf(values.size), mutable = false)
 
 /** Creates a 0-dimensional array of the given values. */
-fun scalarOf(value: Double) = NDArray(doubleArrayOf(value), intArrayOf())
+fun scalarOf(value: Double) = NDArray(doubleArrayOf(value), intArrayOf(), mutable = false)
 
 /** Creates a 0-dimensional array of an integer. */
 fun scalarOfInt(value: Int) = scalarOf(value.toDouble())
 
 /** Creates a 1-dimensional array of the given values. */
-fun vectorOf(vararg values: Double) = NDArray(values, intArrayOf(values.size))
+fun vectorOf(vararg values: Double) = NDArray(values, intArrayOf(values.size), mutable = false)
 
 /** Creates a 2-dimensional array of the given rows. */
 fun matrixOf(vararg values: DoubleArray): NDArray {
