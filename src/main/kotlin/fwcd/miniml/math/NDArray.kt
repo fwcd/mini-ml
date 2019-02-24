@@ -6,8 +6,8 @@ import java.util.ArrayDeque
 private val MATRIX_TRANSPOSE: IntArray = intArrayOf(1, 0)
 
 /**
- * A mutable n-dimensional array. However, all non-assign
- * operations will not mutate this array. For indexing
+ * An n-dimensional array. Immutable by default, all non-assign
+ * operations will never mutate this array. For indexing
  * the row-major order is used.
  *
  * <p>In machine learning, these arrays are often referred
@@ -17,14 +17,14 @@ private val MATRIX_TRANSPOSE: IntArray = intArrayOf(1, 0)
 class NDArray(
 	val values: DoubleArray,
 	var shape: IntArray,
-	var mutable: Boolean = true
+	var mutable: Boolean = false
 ) {
 	val flatSize
 		get() = values.size
 	val rank
 		get() = shape.size
 	
-	constructor(shape: IntArray) : this(DoubleArray(toFlattenedSize(shape)), shape) {}
+	constructor(shape: IntArray, mutable: Boolean = false) : this(DoubleArray(toFlattenedSize(shape)), shape, mutable)
 	
 	init {
 		if (values.size != toFlattenedSize(shape)) {
@@ -195,7 +195,7 @@ class NDArray(
 			throw ShapeMismatchException("Number of permutation indices ${permutation.contentToString()} does not match shape ${shape.contentToString()}")
 		}
 		
-		val transposed = NDArray(shape.rearranged(*permutation))
+		val transposed = NDArray(shape.rearranged(*permutation), mutable = true)
 		
 		traverse {
 			transposed.setAt(it.rearranged(*permutation), get(*it))
@@ -253,7 +253,7 @@ class NDArray(
 			// Multiply matrix by vector (assuming the vector is a column)
 			val dotCount = shape[1]
 			val productHeight = shape[0]
-			val product = NDArray(intArrayOf(productHeight))
+			val product = NDArray(intArrayOf(productHeight), mutable = true)
 			
 			for (y in 0 until productHeight) {
 				var dot: Double = 0.0
@@ -271,7 +271,7 @@ class NDArray(
 			val dotCount = shape[1]
 			val productHeight = shape[0]
 			val productWidth = rhs.shape[1]
-			val product = NDArray(intArrayOf(productHeight, productWidth))
+			val product = NDArray(intArrayOf(productHeight, productWidth), mutable = true)
 			
 			for (y in 0 until productHeight) {
 				for (x in 0 until productWidth) {
