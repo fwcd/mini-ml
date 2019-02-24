@@ -9,7 +9,8 @@ private val LOG = loggerFor<Constant>()
  * A constant value.
  */
 class Constant(
-	private val value: NDArray
+	private val value: NDArray,
+	private val name: String? = null
 ) : ValueNode {
 	override val operands: List<ValueNode> = emptyList()
 	
@@ -19,5 +20,5 @@ class Constant(
 		LOG.debug("Backpropagating through constant: {}", value)
 	}
 	
-	override fun toString(): String = "(const $value)"
+	override fun toString(): String = "(const $value${name?.let { " $it" } ?: ""})"
 }

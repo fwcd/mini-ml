@@ -9,7 +9,8 @@ private val LOG = loggerFor<Variable>()
  * A variable that is optimized through gradients.
  */
 class Variable(
-	private val value: NDArray
+	private val value: NDArray,
+	private val name: String? = null
 ) : ValueNode {
 	override val operands: List<ValueNode> = emptyList()
 	
@@ -23,5 +24,5 @@ class Variable(
 		LOG.debug("Backpropagating through variable: {}", value)
 	}
 	
-	override fun toString(): String = "(var $value)"
+	override fun toString(): String = "(var $value${name?.let { " $it" } ?: ""})"
 }

@@ -10,7 +10,8 @@ private val LOG = loggerFor<Placeholder>()
  * Usually, these are inputs to the computation graph.
  */
 class Placeholder(
-	var value: NDArray
+	var value: NDArray,
+	private val name: String? = null
 ) : ValueNode {
 	override val operands: List<ValueNode> = emptyList()
 	
@@ -20,5 +21,5 @@ class Placeholder(
 		LOG.debug("Backpropagating through placeholder: {}", value)
 	}
 	
-	override fun toString(): String = "(ph $value)"
+	override fun toString(): String = "(ph $value${name?.let { " $it" } ?: ""})"
 }
