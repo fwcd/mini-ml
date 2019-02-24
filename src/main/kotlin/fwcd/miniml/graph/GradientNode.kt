@@ -84,5 +84,7 @@ class GradientNode(private val delegate: ValueNode) : ValueNode {
 	
 	fun cos(): GradientNode = GradientNode(Cos(this))
 	
+	fun tan(): GradientNode = GradientNode(Tan(this))
+	
 	override fun toString(): String = delegate.toString()
 }
