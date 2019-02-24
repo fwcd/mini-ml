@@ -119,6 +119,15 @@ class GraphTest {
 	}
 	
 	@Test
+	fun testTanh() {
+		val x = variable(scalarOf(0.7), name = "x")
+		val th = x.tanh()
+		assertThat(th.forward(), approxEquals(scalarOf(0.6044)))
+		th.backward()
+		assertThat(x.gradient!!, approxEquals(scalarOf(0.6347)))
+	}
+	
+	@Test
 	@Ignore
 	fun testScalarGraphOptimization() {
 		val x = placeholder(zeros())
