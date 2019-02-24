@@ -92,6 +92,15 @@ class GraphTest {
 	}
 	
 	@Test
+	fun testSigmoid() {
+		val x = variable(scalarOf(4.5), name = "x")
+		val sig = x.sigmoid()
+		assertThat(sig.forward(), approxEquals(scalarOf(0.989)))
+		sig.backward()
+		assertThat(x.gradient!!, approxEquals(scalarOf(0.0109)))
+	}
+	
+	@Test
 	@Ignore
 	fun testScalarGraphOptimization() {
 		val x = placeholder(zeros())

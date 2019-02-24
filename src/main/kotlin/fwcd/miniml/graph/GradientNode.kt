@@ -76,5 +76,7 @@ class GradientNode(private val delegate: ValueNode) : ValueNode {
 	
 	fun reduceSum(): GradientNode = GradientNode(ReduceSum(this))
 	
+	fun sigmoid(): GradientNode = GradientNode(Sigmoid(this))
+	
 	override fun toString(): String = delegate.toString()
 }
