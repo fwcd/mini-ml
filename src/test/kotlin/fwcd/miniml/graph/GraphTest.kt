@@ -128,6 +128,15 @@ class GraphTest {
 	}
 	
 	@Test
+	fun testSin() {
+		val x = variable(scalarOf(9.3), name = "x")
+		val s = x.sin()
+		assertThat(s.forward(), approxEquals(scalarOf(0.1245)))
+		s.backward()
+		assertThat(x.gradient!!, approxEquals(scalarOf(-0.9922)))
+	}
+	
+	@Test
 	@Ignore
 	fun testScalarGraphOptimization() {
 		val x = placeholder(zeros())
