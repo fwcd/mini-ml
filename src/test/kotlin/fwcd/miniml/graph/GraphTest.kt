@@ -97,18 +97,20 @@ class GraphTest {
 		val x = placeholder(zeros())
 		val w = variable(randoms(-10.0, 10.0))
 		val b = variable(randoms(-10.0, 10.0))
-		val expected = x.square()
+		val expected = x * 3.0
 		val output = (w * x) + b
 		val cost = (expected - output).square()
-		
-		for (i in 0 until 1000) {
+		val learningRate = 0.0001
+
+		for (i in 0 until 2000) {
 			x.value = randoms(-10.0, 10.0)
-			val currentCost = cost.forward()
+			cost.forward()
+			cost.clearGradients()
 			cost.backward()
-			w.apply(-w.gradient!! * 0.1)
-			b.apply(-b.gradient!! * 0.1)
+			w.apply(-w.gradient!! * learningRate)
+			b.apply(-b.gradient!! * learningRate)
 		}
-		
+
 		// TODO: Use fixed values and add assertions
 	}
 	
@@ -121,18 +123,15 @@ class GraphTest {
 		val expected = x.square()
 		val output = (w matmul x) + b
 		val cost = (expected - output).square().reduceSum()
-		val dataVec = mutableListOf<Double>() // DEBUG
 		
 		for (i in 0 until 1000) {
 			x.value = randoms(0.0, 3.0, 3)
-			val currentCost = cost.forward()
+			cost.forward()
 			cost.backward()
 			w.apply(-w.gradient!! * 0.01)
 			b.apply(-b.gradient!! * 0.01)
-			dataVec.add(currentCost.expectScalar()) // DEBUG
 		}
 		
 		// TODO: Use fixed values and add assertions
-		println(dataVec) // DEBUG
 	}
 }

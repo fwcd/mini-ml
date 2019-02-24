@@ -4,19 +4,36 @@ A lightweight computation graph library for machine learning written in pure Kot
 MiniML optimizes mathematical expressions by backpropagating gradients through a dynamically created expression graph.
 
 ## Example
-```kotlin
-val a = placeholder(scalarOf(20.5))
-val b = variable(scalarOf(10.0))
-val c = variable(scalarOf(98.1))
-val d = variable(scalarOf(-20.2))
-val output = ((a * c.square()) - (a * b)) + d
+Training a linear model:
 
-println("Forwardpass: ${output.forward()}")
-output.backward()
-println("Gradient of c with respect to 'output': ${c.gradient}")
+```kotlin
+val x = placeholder(zeros())
+val w = variable(randoms(-10.0, 10.0))
+val b = variable(randoms(-10.0, 10.0))
+val expected = x * 3.0
+val output = (w * x) + b
+val cost = (expected - output).square()
+val learningRate = 0.0001
+val writer = File("cost.dat")
+    .also { it.createNewFile() }
+    .printWriter()
+
+for (i in 0 until 2000) {
+    x.value = randoms(-10.0, 10.0)
+    val currentCost = cost.forward()
+    cost.clearGradients()
+    cost.backward()
+    w.apply(-w.gradient!! * learningRate)
+    b.apply(-b.gradient!! * learningRate)
+    writer.println(currentCost)
+}
+
+writer.close()
 ```
 
-It supports modern Kotlin features such as destructuring declarations:
+![Cost function over time](examples/linearModelCost.png)
+
+In addition to operator overloading, MiniML also supports modern Kotlin features such as destructuring declarations:
 
 ```kotlin
 val (rowA, rowB) = matrixOf(

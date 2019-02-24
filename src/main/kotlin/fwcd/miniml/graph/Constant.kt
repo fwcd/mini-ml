@@ -9,7 +9,7 @@ private val LOG = loggerFor<Constant>()
  * A constant value.
  */
 class Constant(
-	private val value: NDArray,
+	val value: NDArray,
 	private val name: String? = null
 ) : ValueNode {
 	override val operands: List<ValueNode> = emptyList()

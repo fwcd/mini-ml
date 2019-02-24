@@ -173,7 +173,7 @@ class NDArrayTest {
 	
 	@Test
 	fun testReshape() {
-		val a = vectorOfInts(3, 2, 4, 9, 2, 9)
+		val a = vectorOfInts(3, 2, 4, 9, 2, 9).also { it.mutable = true }
 		val mat = a.reshape(1, 6)
 		assertThat(a.reshape(6, 1), approxEquals(mat.transpose()))
 		assertThat(a.reshape(2, 3), approxEquals(matrixOf(

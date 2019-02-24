@@ -50,11 +50,15 @@ class GradientNode(private val delegate: ValueNode) : ValueNode {
 		delegate.backward(gradient)
 	}
 	
+	override fun apply(delta: NDArray) = delegate.apply(delta)
+	
 	operator fun plus(rhs: ValueNode): GradientNode = GradientNode(Sum(this, rhs))
 	
 	operator fun minus(rhs: ValueNode): GradientNode = GradientNode(Difference(this, rhs))
 	
 	operator fun times(rhs: ValueNode): GradientNode = GradientNode(ElementwiseProduct(this, rhs))
+	
+	operator fun times(scalar: Double): GradientNode = GradientNode(ElementwiseScalarProduct(this, scalar))
 	
 	operator fun div(rhs: ValueNode): GradientNode = GradientNode(ElementwiseQuotient(this, rhs))
 	
