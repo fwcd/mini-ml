@@ -92,6 +92,24 @@ class GraphTest {
 	}
 	
 	@Test
+	fun testNegative() {
+		val x = variable(scalarOf(5.8), name = "x")
+		val neg = -x
+		assertThat(neg.forward(), approxEquals(scalarOf(-5.8)))
+		neg.backward()
+		assertThat(x.gradient!!, approxEquals(scalarOfInt(-1)))
+	}
+	
+	@Test
+	fun testReciprocal() {
+		val x = variable(scalarOf(5.8), name = "x")
+		val rec = x.reciprocal()
+		assertThat(rec.forward(), approxEquals(scalarOf(0.1724137931034483)))
+		rec.backward()
+		assertThat(x.gradient!!, approxEquals(scalarOf(-0.0297)))
+	}
+	
+	@Test
 	fun testSigmoid() {
 		val x = variable(scalarOf(4.5), name = "x")
 		val sig = x.sigmoid()

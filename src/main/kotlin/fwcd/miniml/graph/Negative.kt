@@ -11,21 +11,9 @@ private val LOG = loggerFor<Negative>()
  */
 class Negative(
 	value: ValueNode
-) : ValueNode {
-	override val operands: List<ValueNode> = listOf(value)
-	
-	override fun forward() = -operands[0].forward()
-	
-	override fun backward(gradient: NDArray) {
-		LOG.debug("Backpropagating through negative: {}", this)
-		val input = operands[0].cachedForward() ?: throw MissingCachedInputArrayException("Negative")
-		
-		if (!input.shape.contentEquals(gradient.shape)) {
-			throw ShapeMismatchException("Gradient of negative", input.shape, gradient.shape)
-		}
-		
-		operands[0].backward(-gradient)
-	}
-	
-	override fun toString(): String = "-${operands[0]}"
-}
+) : UnaryElementwise(
+	value,
+	"negative",
+	{ -it },
+	{ -1.0 }
+)
