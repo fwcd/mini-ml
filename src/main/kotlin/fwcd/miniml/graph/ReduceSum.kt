@@ -31,5 +31,5 @@ class ReduceSum(
 			?: throw MissingCachedInputArrayException("ReduceSum")
 	}
 	
-	override fun toString(): String = "(Sum over $operands)"
+	override fun toString(): String = "(Sum over [${operands[0]}])"
 }
